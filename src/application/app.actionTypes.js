@@ -1,0 +1,1 @@
+export const SET_APP_SECRET = 'SET_APP_SECRET';

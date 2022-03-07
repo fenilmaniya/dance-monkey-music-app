@@ -1,0 +1,1 @@
+export default convertToSSL = (url) => url.replace('http', 'https');

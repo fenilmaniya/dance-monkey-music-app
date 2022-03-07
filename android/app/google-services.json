@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "687792173940",
+    "project_id": "gaanasongdownloader",
+    "storage_bucket": "gaanasongdownloader.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:687792173940:android:c8e25ab3f161a6ff4ff221",
+        "android_client_info": {
+          "package_name": "com.gaanamusicdownloader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "687792173940-if5m8hnel0ug9jclkj00s6el4ubs04eb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxklT7lz8waME7NmlOBuRc-L8aqhrliCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "687792173940-if5m8hnel0ug9jclkj00s6el4ubs04eb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
