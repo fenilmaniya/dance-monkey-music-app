@@ -46,7 +46,7 @@ jobs:
         env:
           firebaseToken: ${{ secrets.FIREBASE_TOKEN_DANCE_MONKEY }}
           firebaseGroups: INTERNAL
-          firebaseAppId: 1:814713613964:android:28398a028260d7d42295a9
+          firebaseAppId: ${{ secrets.FIREBASE_APP_ID_DANCE_MONKEY }}
           notes: ${{ github.event.head_commit.message }}
         run: |
           yarn global add firebase-tools
