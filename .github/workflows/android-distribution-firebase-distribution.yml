@@ -3,7 +3,7 @@ name: Distribute Android app to firebase app distribution
 on:
   push:
     branches:
-      - master
+      - branch-workflow-for-android-distribution
 jobs:
   dev-distribution:
     runs-on: ubuntu-latest
