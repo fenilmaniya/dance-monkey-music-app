@@ -11,7 +11,7 @@ export default function Searchbar() {
 
   const _handleTextChange = _.debounce((value) => {
     dispatch(searchWithQuery(value))
-  }, 200)
+  }, 1000)
 
   return (
     <TextInput 

@@ -8,6 +8,8 @@ const getBaseUrl = ({ isOld = true, app }) => {
 }
 
 export default apiGet = ({isOld = true, app, route}) => {
+
+  console.log(`${getBaseUrl({ app })}${route}`);
   
   return fetch(`${getBaseUrl({ app })}${route}`, {
     method: 'get',

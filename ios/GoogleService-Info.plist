@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>687792173940-9vr7aufg3qrd4qijjk41d3ejl13b7gv1.apps.googleusercontent.com</string>
+	<string>687792173940-3lrt0hfdm9cps7laue26j6lfbe9g3jtk.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.687792173940-9vr7aufg3qrd4qijjk41d3ejl13b7gv1</string>
+	<string>com.googleusercontent.apps.687792173940-3lrt0hfdm9cps7laue26j6lfbe9g3jtk</string>
 	<key>API_KEY</key>
 	<string>AIzaSyD-aFv7bh2MSQa0cQLuFdoqPGlWwr4_dk4</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.GaanaMusicDownloader</string>
+	<string>com.DanceMonkey</string>
 	<key>PROJECT_ID</key>
 	<string>gaanasongdownloader</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:687792173940:ios:879305372e681d254ff221</string>
+	<string>1:687792173940:ios:b9319635515724624ff221</string>
 </dict>
 </plist>

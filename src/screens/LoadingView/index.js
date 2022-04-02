@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { colors } from '../../constants';
 import { fetchConstants } from './loadingView.actions';
@@ -14,7 +14,10 @@ export default function LoadingView() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.mainText}>Loading...</Text>
+      <Image 
+        source={require('../../assets/images/dance_monkey.png')} 
+        style={{ width: 120, height: 120, borderRadius: 4 }}
+      />
     </View>
   )
 }
@@ -24,11 +27,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.red
+    backgroundColor: 'black'
   },
-  mainText: {
-    color: colors.white,
-    fontSize: 20,
-    fontWeight: 'bold',
-  }
 })

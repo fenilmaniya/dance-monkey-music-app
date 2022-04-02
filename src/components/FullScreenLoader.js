@@ -3,7 +3,7 @@ import { View, Modal, ActivityIndicator, Text } from 'react-native';
 import { colors } from '../constants';
 
 export default function FullScreenLoader({
-  visible
+  visible = true
 }) {
   return (
     <Modal

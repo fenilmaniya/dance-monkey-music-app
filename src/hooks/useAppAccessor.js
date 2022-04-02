@@ -10,9 +10,24 @@ const useAppAccessor = () => {
     return state.home;
   });
 
+  const getCurrentTrack = useSelector(state => {
+    return state.SRPA.currentPlayTrack
+  });
+
+  const getCurrentPlaylist = useSelector(state => {
+    return state.SRPA.currentPlaylist
+  });
+
+  const getCurrentPlaylistDetails = useSelector(state => {
+    return state.playlistDetails
+  });
+
   return {
     getApp: () => getApp,
     getHome: () => getHome,
+    getCurrentTrack: () => getCurrentTrack,
+    getCurrentPlaylist: () => getCurrentPlaylist,
+    getCurrentPlaylistDetails: () => getCurrentPlaylistDetails,
   }
 }
 

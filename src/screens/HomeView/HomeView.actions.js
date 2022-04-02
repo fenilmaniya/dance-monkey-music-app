@@ -6,8 +6,15 @@ import {
   SEARCH_QUERY_ERROR
 } from './HomeView.actionTypes';
 
+const search_type = [
+  'tracks',
+  'album',
+  'artist',
+  'playlist'
+]
+
 export const searchWithQuery = (query) => {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     dispatch({
       type: SEARCH_QUERY_REQUEST
     });
@@ -15,24 +22,33 @@ export const searchWithQuery = (query) => {
     const state = getState();
     const app = state.app;
 
-    apiGet({
-      app,
-      route: `${urls.search}${query}`
-    })
-    .then(res => {
-      if (res) {
+    const searchArray = [];
+
+    for (const type of search_type) {
+      
+      const searchItem = await apiGet({
+        app,
+        route: `${urls[`search_${type}`]}${query}`
+      })
+      .then(res => {
+        if (res) {
+          dispatch({
+            type: SEARCH_QUERY_RESPONSE,
+            payload : {
+              [type]: res?.[type] ?? [],
+            }
+          });
+        }
+      })
+      .catch(err => {
         dispatch({
-          type: SEARCH_QUERY_RESPONSE,
-          payload : {
-            tracks: res?.tracks ?? []
-          }
+          type: SEARCH_QUERY_ERROR
         });
-      }
-    })
-    .catch(err => {
-      dispatch({
-        type: SEARCH_QUERY_ERROR
       });
-    });
+
+      searchArray.push(searchItem);
+    }
+
+    return Promise.all(searchArray);
   }
 }
