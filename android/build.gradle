@@ -2,6 +2,7 @@
 
 buildscript {
     ext {
+        androidXCore = "1.6.0"
         buildToolsVersion = "30.0.2"
         minSdkVersion = 21
         compileSdkVersion = 30
@@ -40,4 +41,8 @@ allprojects {
         google()
         maven { url 'https://www.jitpack.io' }
     }
+}
+
+configurations.all {   
+    resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
 }
