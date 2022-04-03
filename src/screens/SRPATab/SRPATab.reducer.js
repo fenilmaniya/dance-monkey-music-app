@@ -19,6 +19,7 @@ export default function SRPATabReducer(state = initialState, action) {
         }
       }
     case SET_CURRENT_PLAYLIST:
+      console.log('tracks', action.payload)
       return {
         ...state,
         currentPlaylist: {

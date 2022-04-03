@@ -17,12 +17,10 @@ module.exports = async function() {
   TrackPlayer.addEventListener('remote-pause', () => TrackPlayer.pause());
 
   TrackPlayer.addEventListener('remote-next', () => {
-    console.log('next-')
     store.dispatch(skipToNext());
   });
 
   TrackPlayer.addEventListener('remote-previous', () => {
-    console.log('previous-')
     store.dispatch(skipToPrevious());
   })
 }

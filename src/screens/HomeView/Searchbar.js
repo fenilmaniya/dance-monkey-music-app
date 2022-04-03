@@ -25,6 +25,7 @@ export default function Searchbar() {
 
 const styles = StyleSheet.create({
   textInput: {
+    flex: 1,
     color: colors.black,
     backgroundColor: colors.gray,
     margin: 10,

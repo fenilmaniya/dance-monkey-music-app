@@ -4,20 +4,26 @@ import { useDispatch } from 'react-redux';
 import { Header, TrackList } from '../../components';
 import { useAppAccessor } from '../../hooks';
 import styles from './styles';
-import { fetchPlaylistDetails } from './playlistDetails.actions'
+import { fetchPlaylistDetails, fetchFavoritePlaylistDetails } from './playlistDetails.actions'
 
 export default function PlaylistDetailsView() {
 
   const dispatch = useDispatch();
   const { getCurrentPlaylist, getCurrentPlaylistDetails } = useAppAccessor();
   const currentPlaylistDetails = getCurrentPlaylistDetails();
-  const { title, artwork, playlist_id } = getCurrentPlaylist();
+  const { title, playlist_id } = getCurrentPlaylist();
 
   const { loading, playlistDetail } = currentPlaylistDetails;
   const tracks = playlistDetail?.tracks ?? [];
 
   useEffect(() => {
-    dispatch(fetchPlaylistDetails(playlist_id));
+    if (playlist_id === 'favorites') {
+
+      dispatch(fetchFavoritePlaylistDetails());
+    } else {
+      
+      dispatch(fetchPlaylistDetails(playlist_id));
+    }
   }, [])
 
   return(

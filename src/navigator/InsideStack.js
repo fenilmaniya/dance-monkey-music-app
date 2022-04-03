@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   HomeView,
   PlayerView,
-  PlaylistDetailsView
+  PlaylistDetailsView,
 } from '../screens';
 
 const Stack = createNativeStackNavigator();

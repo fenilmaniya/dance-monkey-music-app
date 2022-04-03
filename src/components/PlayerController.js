@@ -21,7 +21,6 @@ export default function PlayerController() {
       console.warn('An error occured while playing the current track.');
     }
     if (event.type === Event.PlaybackState) {
-      console.log(event.state)
       setPlayerState(event.state);
     }
     if (event.type === Event.PlaybackQueueEnded) {

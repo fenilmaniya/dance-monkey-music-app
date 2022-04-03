@@ -6,19 +6,19 @@ import Icon from '../../lib/Icons';
 import styles from './styles';
 import { useAppAccessor } from '../../hooks';
 import { convertToSSL } from '../../utils';
-import { fetchCurrentTrackURL, generatePlayList } from './playerView.actions';
+import { fetchCurrentTrackURL, generatePlayList, addToFavorite } from './playerView.actions';
 
 export default function PlayerView() {
 
   const dispatch = useDispatch();
-  const { getCurrentTrack, getCurrentPlaylist } = useAppAccessor();
+  const { getCurrentTrack, getCurrentPlaylistDetails } = useAppAccessor();
   const currentPlayTrack = getCurrentTrack();
-  const currentPlaylist = getCurrentPlaylist();
+  const currentPlaylistDetails = getCurrentPlaylistDetails();
   const { artwork_large, track_title, secondary_language, duration } = currentPlayTrack;
 
   useEffect(() => {
     dispatch(fetchCurrentTrackURL(currentPlayTrack));
-    dispatch(generatePlayList(currentPlaylist, currentPlayTrack));
+    dispatch(generatePlayList(currentPlaylistDetails, currentPlayTrack));
   }, []);
 
   return (
@@ -53,6 +53,7 @@ export default function PlayerView() {
             <Icon name="download" fill="#fff" height="20" width="20" />
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => addToFavorite(currentPlayTrack)}
             style={styles.buttonContainer}>  
             <Icon name="heart_inline" fill="#fff" height="20" width="20" />
           </TouchableOpacity>

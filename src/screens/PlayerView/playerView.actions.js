@@ -1,6 +1,7 @@
 import TrackPlayer from 'react-native-track-player';
 import base64 from 'js-base64';
 import cryptoJs from "crypto-js";
+import { Q } from '@nozbe/watermelondb';
 import { urls } from '../../constants';
 import { encodeParamsForUrl } from '../../utils/url';
 import { apiGet, apiPost } from "../../dao";
@@ -11,6 +12,7 @@ import { isNumber } from 'lodash';
 import {
   FETCH_PLAYLIST_DETAILS_RESPONSE
 } from '../PlaylistDetailsView/playlistDetails.actionTypes';
+import db from '../../db';
 
 export const fetchCurrentTrackURL = (track) => {
   return async (dispatch, getState) => {
@@ -80,10 +82,15 @@ export const generatePlayList = (currentPlaylist, currentTrack) => {
 
     if (currentPlaylist) {
 
-      const { playlistDetail } = currentPlaylistDetails;
+      const { playlistDetail } = currentPlaylist;
 
-      const currentTrackIndex = playlistDetail.tracks.findIndex(track => track.track_id === currentTrack.track_id);
-      if (currentTrackIndex) return;
+      console.log(playlistDetail.tracks.length);
+
+      if (playlistDetail) {
+
+        const currentTrackIndex = playlistDetail.tracks.findIndex(track => track.track_id === currentTrack.track_id);
+        if (isNumber(currentTrackIndex)) return;
+      }
     }
 
     apiPost({
@@ -98,6 +105,24 @@ export const generatePlayList = (currentPlaylist, currentTrack) => {
         payload: {...{ tracks }},
       });
     });
+  }
+}
+
+export const addToFavorite = async (currentTrack) => {
+  const favoritePlaylistCollection = db.collections.get('f_playlists');
+  const favoritePlaylist = await favoritePlaylistCollection.query(Q.where('playlist_id', 'favorites')).fetch();
+  if (favoritePlaylist && favoritePlaylist.length > 0) {
+
+    const tracks = favoritePlaylist[0].tracks;
+    if (!tracks.find(track => track.track_id === currentTrack.track_id)) {
+      tracks.push(currentTrack);
+      await db.write(async () => {
+
+        await favoritePlaylist[0].update(FPlaylist => {
+          FPlaylist.tracks = tracks
+        });
+      });
+    }
   }
 }
 
@@ -131,7 +156,6 @@ export const skipToNext = () => {
     if (!isNumber(currentTrackIndex)) return;
 
     const nextIndex = currentTrackIndex === playlistDetail.tracks.length - 1 ? 0 : currentTrackIndex + 1;
-    console.log(nextIndex)
     dispatch(fetchCurrentTrackURL(playlistDetail.tracks[nextIndex]));
   }
 }
