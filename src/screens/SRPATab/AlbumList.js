@@ -6,12 +6,14 @@ import { useAppAccessor } from "../../hooks";
 import { colors } from '../../constants';
 import { convertToSSL } from '../../utils';
 import { playTrack } from './SRPATab.actions';
+import { NoResultFound } from '../../components';
 
 export default function AlbumList() {
 
 
   const { getHome }= useAppAccessor();
   const {
+    loading,
     album,
   } = getHome();
 
@@ -49,12 +51,15 @@ export default function AlbumList() {
   }
 
   return (
-    <FlatList 
-      data={album}
-      style={{ backgroundColor: colors.black, }}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => `album-${item.album_id}`}
-    />
+    <>
+      { (!loading && (album ?? []).length===0 )&& <NoResultFound /> }
+      <FlatList 
+        data={album}
+        style={{ backgroundColor: colors.black, }}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `album-${item.album_id}`}
+      />
+    </>
   )
 }
 

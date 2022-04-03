@@ -2,20 +2,23 @@ import React, { useEffect } from 'react';
 import { Image, View, Text, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { ProgressSlider, PlayerController, Header } from '../../components';
+import Icon from '../../lib/Icons';
 import styles from './styles';
 import { useAppAccessor } from '../../hooks';
 import { convertToSSL } from '../../utils';
-import { fetchCurrentTrackURL } from './playerView.actions';
+import { fetchCurrentTrackURL, generatePlayList } from './playerView.actions';
 
 export default function PlayerView() {
 
   const dispatch = useDispatch();
-  const { getCurrentTrack } = useAppAccessor();
+  const { getCurrentTrack, getCurrentPlaylist } = useAppAccessor();
   const currentPlayTrack = getCurrentTrack();
+  const currentPlaylist = getCurrentPlaylist();
   const { artwork_large, track_title, secondary_language, duration } = currentPlayTrack;
 
   useEffect(() => {
     dispatch(fetchCurrentTrackURL(currentPlayTrack));
+    dispatch(generatePlayList(currentPlaylist, currentPlayTrack));
   }, []);
 
   return (
@@ -46,8 +49,12 @@ export default function PlayerView() {
           </View>
 
           <TouchableOpacity
-            style={styles.buttonContainer}>
-            <Text style={{ color: 'white'}}>Download</Text>
+            style={styles.buttonContainer}>  
+            <Icon name="download" fill="#fff" height="20" width="20" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer}>  
+            <Icon name="heart_inline" fill="#fff" height="20" width="20" />
           </TouchableOpacity>
         </View>
         <ProgressSlider {...{duration}} />

@@ -6,11 +6,13 @@ import { useAppAccessor } from "../../hooks";
 import { colors } from '../../constants';
 import { convertToSSL } from '../../utils';
 import { playTrack } from './SRPATab.actions';
+import { NoResultFound } from '../../components';
 
 export default function TrackList() {
 
   const { getHome }= useAppAccessor();
   const {
+    loading,
     artist
   } = getHome();
 
@@ -48,12 +50,15 @@ export default function TrackList() {
   }
 
   return (
-    <FlatList 
-      data={artist}
-      style={{ backgroundColor: colors.black, }}
-      renderItem={renderItem}
-      keyExtractor={(item, index) => `artist-${item.artist_id}`}
-    />
+    <>
+      { (!loading && (artist ?? []).length===0 )&& <NoResultFound /> }
+      <FlatList 
+        data={artist}
+        style={{ backgroundColor: colors.black, }}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `artist-${item.artist_id}`}
+      />
+    </>
   )
 }
 

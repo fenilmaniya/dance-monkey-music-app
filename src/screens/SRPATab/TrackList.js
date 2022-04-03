@@ -1,15 +1,19 @@
 import React from 'react';
 import { useAppAccessor } from "../../hooks";
-import { TrackList } from '../../components';
+import { TrackList, NoResultFound } from '../../components';
 
 export default function SRPATrackList() {
 
   const { getHome }= useAppAccessor();
   const {
+    loading,
     tracks,
   } = getHome();
 
   return (
-    <TrackList {...{tracks}} />
+    <>
+      { (!loading && (tracks ?? []).length===0 )&& <NoResultFound /> }
+      <TrackList {...{tracks}} />
+    </>
   )
 }

@@ -3,11 +3,14 @@ import base64 from 'js-base64';
 import cryptoJs from "crypto-js";
 import { urls } from '../../constants';
 import { encodeParamsForUrl } from '../../utils/url';
-import { apiGet } from "../../dao";
+import { apiGet, apiPost } from "../../dao";
 import {
   SET_CURRENT_PLAY_TRACK
 } from '../SRPATab/SRPATab.actionTypes';
 import { isNumber } from 'lodash';
+import {
+  FETCH_PLAYLIST_DETAILS_RESPONSE
+} from '../PlaylistDetailsView/playlistDetails.actionTypes';
 
 export const fetchCurrentTrackURL = (track) => {
   return async (dispatch, getState) => {
@@ -30,6 +33,15 @@ export const fetchCurrentTrackURL = (track) => {
       "hashcode": signature,
     }
 
+    let trackIndex = await TrackPlayer.getCurrentTrack();
+    
+    if (isNumber(trackIndex)) {
+
+      let track = await TrackPlayer.getTrack(trackIndex);
+      if (track && track.track_id === track_id) return;
+    }
+
+    
     apiGet({
       app,
       route: `${urls.getTrack}${encodeParamsForUrl(params)}`
@@ -58,6 +70,33 @@ export const fetchCurrentTrackURL = (track) => {
       ]);
 
       await TrackPlayer.play();
+    });
+  }
+}
+
+export const generatePlayList = (currentPlaylist, currentTrack) => {
+
+  return dispatch => {
+
+    if (currentPlaylist) {
+
+      const { playlistDetail } = currentPlaylistDetails;
+
+      const currentTrackIndex = playlistDetail.tracks.findIndex(track => track.track_id === currentTrack.track_id);
+      if (currentTrackIndex) return;
+    }
+
+    apiPost({
+      isOld: false,
+      route: `${urls.similar_songs}${currentTrack.track_id}`
+    })
+    .then(data => {
+      const tracks = data.tracks ?? [];
+      tracks.unshift(currentTrack);
+      dispatch({
+        type: FETCH_PLAYLIST_DETAILS_RESPONSE,
+        payload: {...{ tracks }},
+      });
     });
   }
 }
@@ -92,6 +131,7 @@ export const skipToNext = () => {
     if (!isNumber(currentTrackIndex)) return;
 
     const nextIndex = currentTrackIndex === playlistDetail.tracks.length - 1 ? 0 : currentTrackIndex + 1;
+    console.log(nextIndex)
     dispatch(fetchCurrentTrackURL(playlistDetail.tracks[nextIndex]));
   }
 }

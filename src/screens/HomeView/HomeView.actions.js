@@ -15,6 +15,10 @@ const search_type = [
 
 export const searchWithQuery = (query) => {
   return async (dispatch, getState) => {
+    if (!query) return;
+
+    if (query.trim().length===0) return;
+
     dispatch({
       type: SEARCH_QUERY_REQUEST
     });
@@ -28,7 +32,7 @@ export const searchWithQuery = (query) => {
       
       const searchItem = await apiGet({
         app,
-        route: `${urls[`search_${type}`]}${query}`
+        route: `${urls[`search_${type}`]}${query.trim()}`
       })
       .then(res => {
         if (res) {
