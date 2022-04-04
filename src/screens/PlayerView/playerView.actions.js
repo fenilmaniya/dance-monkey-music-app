@@ -118,7 +118,7 @@ export const addToFavorite = async (currentTrack) => {
       tracks.push(currentTrack);
 
       console.log(tracks);
-      await db.write(async () => {
+      db.action(async () => {
 
         await favoritePlaylist[0].update(FPlaylist => {
           FPlaylist.playlist_id = 'favorites',
