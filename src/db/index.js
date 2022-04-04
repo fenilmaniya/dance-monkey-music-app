@@ -1,12 +1,12 @@
 import { Database } from '@nozbe/watermelondb'
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite'
 
-import appSchema from './model/schema'
+import { mySchema } from './model/schema'
 
 import FPlaylist from './model/FPlaylist';
 
 const adapter = new SQLiteAdapter({
-    schema: appSchema, 
+    schema: mySchema, 
 })
 
 const database = new Database({

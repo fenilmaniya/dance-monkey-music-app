@@ -781,7 +781,6 @@ PODS:
     - React-RCTImage
   - RNSVG (12.3.0):
     - React-Core
-  - simdjson (1.0.0)
   - SocketRocket (0.6.0)
   - SwiftAudioEx (0.14.7)
   - WatermelonDB (0.24.0):
@@ -853,7 +852,6 @@ DEPENDENCIES:
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - "simdjson (from `../node_modules/@nozbe/simdjson`)"
   - "WatermelonDB (from `../node_modules/@nozbe/watermelondb`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -964,8 +962,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  simdjson:
-    :path: "../node_modules/@nozbe/simdjson"
   WatermelonDB:
     :path: "../node_modules/@nozbe/watermelondb"
   Yoga:
@@ -1035,13 +1031,12 @@ SPEC CHECKSUMS:
   RNFBFirestore: 06d06485901708c3b2c8f569433058911a82c121
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
-  simdjson: fa9e4a54264d6a4afa29c99d0f6bb8de02ede995
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SwiftAudioEx: 3a4024e48f3b3e45dac6bf2668d7adbe7b83f50e
   WatermelonDB: 9ba0c9f6706f660807823617396ae59f3911268d
   Yoga: 6671cf077f614314c22fd09ddf87d7abeee64e96
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 9eb54d90b37a9f106d4c31e1eec25e7f4ae249ae
+PODFILE CHECKSUM: b92877f9e943cb24a6623a9e8c681b5dafd481e3
 
 COCOAPODS: 1.11.2

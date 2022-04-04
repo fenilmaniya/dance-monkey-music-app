@@ -36,6 +36,7 @@ export const searchWithQuery = (query) => {
       })
       .then(res => {
         if (res) {
+          console.log(type, res?.[type].length)
           dispatch({
             type: SEARCH_QUERY_RESPONSE,
             payload : {

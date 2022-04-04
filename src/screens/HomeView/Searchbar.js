@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, StyleSheet } from 'react-native';
+import { TextInput, StyleSheet, Platform } from 'react-native';
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { colors } from '../../constants';
@@ -19,6 +19,7 @@ export default function Searchbar() {
       placeholder={'Search...'}
       placeholderTextColor={colors.black}
       onChangeText={_handleTextChange}
+      autoComplete={'off'}
     />
   )
 }

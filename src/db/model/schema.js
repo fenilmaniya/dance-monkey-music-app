@@ -1,8 +1,8 @@
 // model/schema.js
 import { appSchema, tableSchema } from '@nozbe/watermelondb'
 
-export default appSchema({
-  version: 1,
+export const mySchema = appSchema({
+  version: 1.1,
   tables: [
     tableSchema({
       name: 'f_playlists',

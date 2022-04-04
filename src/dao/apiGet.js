@@ -7,13 +7,13 @@ const getBaseUrl = ({ isOld = true, app }) => {
   }
 }
 
-export default apiGet = ({isOld = true, app, route}) => {
+export default apiGet = ({isOld = true, app, route, needHaeder = false}) => {
 
   console.log(`${getBaseUrl({ app })}${route}`);
   
   return fetch(`${getBaseUrl({ app })}${route}`, {
     method: 'get',
-    headers: defaultHeader,
+    headers: needHaeder ? defaultHeader : {},
   })
   .then(res => res.json())
   .catch(err => {

@@ -46,7 +46,8 @@ export const fetchCurrentTrackURL = (track) => {
     
     apiGet({
       app,
-      route: `${urls.getTrack}${encodeParamsForUrl(params)}`
+      route: `${urls.getTrack}${encodeParamsForUrl(params)}`,
+      needHaeder: true,
     })
     .then(async d => {
       dispatch({
@@ -84,9 +85,7 @@ export const generatePlayList = (currentPlaylist, currentTrack) => {
 
       const { playlistDetail } = currentPlaylist;
 
-      console.log(playlistDetail.tracks.length);
-
-      if (playlistDetail) {
+      if (playlistDetail && playlistDetail.tracks) {
 
         const currentTrackIndex = playlistDetail.tracks.findIndex(track => track.track_id === currentTrack.track_id);
         if (isNumber(currentTrackIndex)) return;
@@ -111,18 +110,31 @@ export const generatePlayList = (currentPlaylist, currentTrack) => {
 export const addToFavorite = async (currentTrack) => {
   const favoritePlaylistCollection = db.collections.get('f_playlists');
   const favoritePlaylist = await favoritePlaylistCollection.query(Q.where('playlist_id', 'favorites')).fetch();
+  
   if (favoritePlaylist && favoritePlaylist.length > 0) {
 
     const tracks = favoritePlaylist[0].tracks;
     if (!tracks.find(track => track.track_id === currentTrack.track_id)) {
       tracks.push(currentTrack);
+
+      console.log(tracks);
       await db.write(async () => {
 
         await favoritePlaylist[0].update(FPlaylist => {
+          FPlaylist.playlist_id = 'favorites',
           FPlaylist.tracks = tracks
         });
       });
     }
+  } else {
+    db.action(async () => {
+
+      await favoritePlaylistCollection.create(FPlaylist => {
+        FPlaylist.title = 'Favorites',
+        FPlaylist.playlist_id = 'favorites',
+        FPlaylist.tracks = [currentTrack]
+      });
+    });
   }
 }
 

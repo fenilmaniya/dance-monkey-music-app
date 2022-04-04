@@ -7,6 +7,14 @@ import { Provider } from 'react-redux';
 import store from './src/lib/store';
 import AppNavigator from './src/navigator/AppNavigator';
 
+import {
+  PlayButton,
+  PauseButton,
+  NextButton,
+  PreviousButton,
+  NotificationIcon,
+} from './src/constants/images';
+
 export default function App() {
 
   useEffect(() => {
@@ -26,11 +34,11 @@ export default function App() {
       compactCapabilities: [Capability.Play, Capability.Pause],
   
       // Icons for the notification on Android (if you don't like the default ones)
-      playIcon: require('./src/assets/icons/play-icon.png'),
-      pauseIcon: require('./src/assets/icons/pause-icon.png'),
-      previousIcon: require('./src/assets/icons/previous-icon.png'),
-      nextIcon: require('./src/assets/icons/next-icon.png'),
-      icon: require('./src/assets/icons/notification-icon.png')
+      playIcon: PlayButton,
+      pauseIcon: PauseButton,
+      previousIcon: NextButton,
+      nextIcon: PreviousButton,
+      icon: NotificationIcon,
   });
   }, [])
 
