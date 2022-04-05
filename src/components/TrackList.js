@@ -22,19 +22,19 @@ export default function TrackList({ tracks }) {
         }}
         style={styles.itemContainer}>
         <Image 
-          source={{uri: convertToSSL(item.artwork)}}
+          source={{uri: convertToSSL(item.artwork ?? item.aw ?? '')}}
           style={styles.itemImage}
         />
         <View style={styles.textContainer}>
           <Text 
             numberOfLines={1}
             style={styles.itemTitle}>
-            {item.track_title}
+            {item.track_title ?? item.ti ?? ''}
           </Text>
           <Text 
             numberOfLines={1}
             style={styles.itemSubTitle}>
-            {item.secondary_language}
+            {item.secondary_language ?? item.language ?? ''}
           </Text>
         </View>
       </TouchableOpacity>
@@ -47,7 +47,7 @@ export default function TrackList({ tracks }) {
       style={{ backgroundColor: colors.black, }}
       showsVerticalScrollIndicator={false}
       renderItem={renderItem}
-      keyExtractor={(item, index) => `track-${item.track_id}`}
+      keyExtractor={(item, index) => `track-${item.track_id ?? item.id}`}
     />
   )
 }

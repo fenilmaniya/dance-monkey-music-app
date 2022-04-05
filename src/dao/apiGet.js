@@ -1,17 +1,22 @@
+import { isEmpty } from 'lodash';
 import defaultHeader from './defaultHeader';
 
-const getBaseUrl = ({ isOld = true, app }) => {
+const getBaseUrl = ({ isOld = true, app, base }) => {
+
+  if (!isEmpty(base)) {
+    return base;
+  }
 
   if (isOld) {
     return app.old_base_url;
   }
 }
 
-export default apiGet = ({isOld = true, app, route, needHaeder = false}) => {
+export default apiGet = ({isOld = true, base = '', app, route, needHaeder = false}) => {
 
-  console.log(`${getBaseUrl({ app })}${route}`);
+  console.log(`${getBaseUrl({ app, isOld, base })}${route}`);
   
-  return fetch(`${getBaseUrl({ app })}${route}`, {
+  return fetch(`${getBaseUrl({ app, isOld, base })}${route}`, {
     method: 'get',
     headers: needHaeder ? defaultHeader : {},
   })

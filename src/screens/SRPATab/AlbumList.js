@@ -31,19 +31,19 @@ export default function AlbumList() {
         }}
         style={styles.itemContainer}>
         <Image 
-          source={{uri: convertToSSL(item.atw)}}
+          source={{uri: convertToSSL(item.atw ?? item.aw ?? '')}}
           style={styles.itemImage}
         />
         <View style={styles.textContainer}>
           <Text 
             numberOfLines={1}
             style={styles.itemTitle}>
-            {item.title}
+            {item.title ?? item.ti ?? ''}
           </Text>
           <Text 
             numberOfLines={1}
             style={styles.itemSubTitle}>
-            {item.language ?? ''}
+            {item.language ?? item.language ?? ''}
           </Text>
         </View>
       </TouchableOpacity>
@@ -57,7 +57,7 @@ export default function AlbumList() {
         data={album}
         style={{ backgroundColor: colors.black, }}
         renderItem={renderItem}
-        keyExtractor={(item, index) => `album-${item.album_id}`}
+        keyExtractor={(item, index) => `album-${item.album_id ?? item.id}`}
       />
     </>
   )

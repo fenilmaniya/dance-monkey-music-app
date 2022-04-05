@@ -16,16 +16,44 @@ import db from '../../db';
 
 export const fetchCurrentTrackURL = (track) => {
   return async (dispatch, getState) => {
+
+    let trackIndex = await TrackPlayer.getCurrentTrack();
+    
+    if (isNumber(trackIndex)) {
+      
+      let trackObj = await TrackPlayer.getTrack(trackIndex);
+      console.log(track.track_id, trackObj)
+      if (track && trackObj.track_id === (track?.track_id ?? track.iid)) return;
+    }
     
     const state = getState();
     const app = state.app;
     const { api_secret } = app;
-    const { album_id, artwork, duration, track_id, track_title, artist } = track;
 
-    const data = base64.encode(track_id);
-    const signature = cryptoJs.HmacMD5(data, api_secret).toString();
+    if (track.iid) {
 
-    const params = {
+      const res = await fetch(`https://gaana.com/apiv2?type=songDetail&seokey=${track.seo}`, { method: 'post'})
+      if (res.ok && res.status == 200) {
+        const json = await res.json();
+        track = json.tracks[0];
+        dispatch({
+          type: SET_CURRENT_PLAY_TRACK,
+          payload: {
+            ...track,
+          }
+        });
+      } else {
+        console.log('unable to find track details');
+        return;
+      }
+    }
+
+    let { album_id, artwork, duration, track_id, track_title, artist } = track;
+
+    let data = base64.encode(track_id);
+    let signature = cryptoJs.HmacMD5(data, api_secret).toString();
+
+    let params = {
       "track_id": track_id,
       "album_id": album_id,
       "type": "rtmp",
@@ -34,15 +62,6 @@ export const fetchCurrentTrackURL = (track) => {
       "quality": "high",
       "hashcode": signature,
     }
-
-    let trackIndex = await TrackPlayer.getCurrentTrack();
-    
-    if (isNumber(trackIndex)) {
-
-      let track = await TrackPlayer.getTrack(trackIndex);
-      if (track && track.track_id === track_id) return;
-    }
-
     
     apiGet({
       app,
@@ -94,7 +113,7 @@ export const generatePlayList = (currentPlaylist, currentTrack) => {
 
     apiPost({
       isOld: false,
-      route: `${urls.similar_songs}${currentTrack.track_id}`
+      route: `${urls.similar_songs}${currentTrack.track_id ?? currentTrack.id}`
     })
     .then(data => {
       const tracks = data.tracks ?? [];
@@ -117,7 +136,6 @@ export const addToFavorite = async (currentTrack) => {
     if (!tracks.find(track => track.track_id === currentTrack.track_id)) {
       tracks.push(currentTrack);
 
-      console.log(tracks);
       db.action(async () => {
 
         await favoritePlaylist[0].update(FPlaylist => {

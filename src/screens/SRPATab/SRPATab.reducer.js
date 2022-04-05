@@ -14,12 +14,10 @@ export default function SRPATabReducer(state = initialState, action) {
       return {
         ...state,
         currentPlayTrack: {
-          ...state.currentPlayTrack,
           ...action.payload
         }
       }
     case SET_CURRENT_PLAYLIST:
-      console.log('tracks', action.payload)
       return {
         ...state,
         currentPlaylist: {

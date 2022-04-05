@@ -26,34 +26,62 @@ export const searchWithQuery = (query) => {
     const state = getState();
     const app = state.app;
 
-    const searchArray = [];
+    await apiGet({
+      base: 'https://gsearch-prod-cloud.gaana.com/',
+      app,
+      route: `${urls.auto_suggest}${query}`
+    })
+    .then(res => {
+      if (res) {
+        res.gr.map(item => {
 
-    for (const type of search_type) {
-      
-      const searchItem = await apiGet({
-        app,
-        route: `${urls[`search_${type}`]}${query.trim()}`
-      })
-      .then(res => {
-        if (res) {
-          console.log(type, res?.[type].length)
+          let type = item.ty.toLowerCase();
+
+          if (type === 'track') {
+            type += 's';
+          }
+
           dispatch({
             type: SEARCH_QUERY_RESPONSE,
             payload : {
-              [type]: res?.[type] ?? [],
+              [type]: item?.gd ?? [],
             }
           });
-        }
-      })
-      .catch(err => {
-        dispatch({
-          type: SEARCH_QUERY_ERROR
         });
-      });
+      }
+    })
+    .catch(async err => {
+      console.log(err);
 
-      searchArray.push(searchItem);
-    }
+      const searchArray = [];
 
-    return Promise.all(searchArray);
+      for (const type of search_type) {
+        
+        const searchItem = await apiGet({
+          app,
+          route: `${urls[`search_${type}`]}${query.trim()}`,
+        })
+        .then(res => {
+          if (res) {
+            console.log(type, res?.[type].length)
+            dispatch({
+              type: SEARCH_QUERY_RESPONSE,
+              payload : {
+                [type]: res?.[type] ?? [],
+              }
+            });
+          }
+        })
+        .catch(err => {
+          dispatch({
+            type: SEARCH_QUERY_ERROR
+          });
+        });
+
+        searchArray.push(searchItem);
+      }
+
+      return Promise.all(searchArray);
+    });
   }
 }

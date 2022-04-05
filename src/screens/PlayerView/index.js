@@ -26,7 +26,7 @@ export default function PlayerView() {
       <Header title={track_title} />
       <View style={{ flex: 1}}>
         <Image 
-          source={{ uri: convertToSSL(artwork_large)}}
+          source={{ uri: convertToSSL(artwork_large ?? '')}}
           style={styles.mainImage}
           resizeMethod={'resize'}
           resizeMode={'contain'}
@@ -39,12 +39,12 @@ export default function PlayerView() {
             <Text 
               numberOfLines={1}
               style={styles.itemTitle}>
-              {track_title}
+              {track_title ?? ''}
             </Text>
             <Text 
               numberOfLines={1}
               style={styles.itemSubTitle}>
-              {secondary_language}
+              {secondary_language ?? ''}
             </Text>
           </View>
 

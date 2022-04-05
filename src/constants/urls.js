@@ -6,4 +6,5 @@ export default {
   getTrack: 'getURLV1.php?',
   playlist_details: 'index.php?type=playlist&subtype=playlist_detail&playlist_id=',
   similar_songs: 'apiv2?type=songSimilar&id=',
+  auto_suggest: 'gaanasearch-api/mobilesuggest/autosuggest-lite-vltr-ro?geoLocation=IN&content_filter=2&include=allItems&isRegSrch=0&webVersion=mix&rType=web&usrLang=Hindi,English,Punjabi,Gujarati&query=',
 }

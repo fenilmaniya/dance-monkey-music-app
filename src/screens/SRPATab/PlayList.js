@@ -31,19 +31,19 @@ export default function PlayList() {
         }}
         style={styles.itemContainer}>
         <Image 
-          source={{uri: convertToSSL(item.artwork)}}
+          source={{uri: convertToSSL(item.artwork ?? item.aw ?? '')}}
           style={styles.itemImage}
         />
         <View style={styles.textContainer}>
           <Text 
             numberOfLines={1}
             style={styles.itemTitle}>
-            {item.title}
+            {item.title ?? item.ti ?? ''}
           </Text>
           <Text 
             numberOfLines={1}
             style={styles.itemSubTitle}>
-            {item.title}
+            {item.title ?? item.ti ?? ''}
           </Text>
         </View>
       </TouchableOpacity>
@@ -57,7 +57,7 @@ export default function PlayList() {
         data={playlist}
         style={{ backgroundColor: colors.black, }}
         renderItem={renderItem}
-        keyExtractor={(item, index) => `playlist-${item.playlist_id}`}
+        keyExtractor={(item, index) => `playlist-${item.playlist_id ?? item.id}`}
       />
     </>
   )

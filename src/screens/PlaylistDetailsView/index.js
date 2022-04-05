@@ -11,7 +11,7 @@ export default function PlaylistDetailsView() {
   const dispatch = useDispatch();
   const { getCurrentPlaylist, getCurrentPlaylistDetails } = useAppAccessor();
   const currentPlaylistDetails = getCurrentPlaylistDetails();
-  const { title, playlist_id } = getCurrentPlaylist();
+  const { title, playlist_id, id } = getCurrentPlaylist();
 
   const { loading, playlistDetail } = currentPlaylistDetails;
   const tracks = playlistDetail?.tracks ?? [];
@@ -22,7 +22,7 @@ export default function PlaylistDetailsView() {
       dispatch(fetchFavoritePlaylistDetails());
     } else {
       
-      dispatch(fetchPlaylistDetails(playlist_id));
+      dispatch(fetchPlaylistDetails(playlist_id ?? id));
     }
   }, [])
 
