@@ -16,7 +16,6 @@ export default function loginReducer(state = initialState, action = {}) {
     case SEARCH_QUERY_REQUEST:
       return {
         ...state,
-        tracks: null,
         loading: true,
       }
     case SEARCH_QUERY_RESPONSE:
@@ -28,7 +27,6 @@ export default function loginReducer(state = initialState, action = {}) {
     case SEARCH_QUERY_ERROR:
       return {
         ...state,
-        tracks: null,
         loading: false,
       }
     default:
