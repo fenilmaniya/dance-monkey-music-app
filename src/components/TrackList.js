@@ -5,8 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import { colors } from '../constants';
 import { convertToSSL } from '../utils';
 import { playTrack } from '../screens/SRPATab/SRPATab.actions';
+import {
+  ADD_TO_PLAYER_QEUEUE
+} from '../screens/PlayerView/playerView.actionTypes';
 
-export default function TrackList({ tracks }) {
+export default function TrackList({ tracks, fromSearch }) {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -15,6 +18,13 @@ export default function TrackList({ tracks }) {
     return (
       <TouchableOpacity
         onPress={() => {
+          if (!fromSearch) {
+            dispatch({
+              type: ADD_TO_PLAYER_QEUEUE,
+              payload: tracks,
+            })
+          }
+
           dispatch(playTrack(item))
             .then(() => {
               navigation.navigate('full-screen-player');
@@ -29,12 +39,12 @@ export default function TrackList({ tracks }) {
           <Text 
             numberOfLines={1}
             style={styles.itemTitle}>
-            {item.track_title}
+            {item.track_title ?? item.name}
           </Text>
           <Text 
             numberOfLines={1}
             style={styles.itemSubTitle}>
-            {item.secondary_language}
+            {item.secondary_language ?? item.language}
           </Text>
         </View>
       </TouchableOpacity>

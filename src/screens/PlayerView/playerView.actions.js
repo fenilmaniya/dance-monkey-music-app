@@ -10,8 +10,8 @@ import {
 } from '../SRPATab/SRPATab.actionTypes';
 import { isNumber } from 'lodash';
 import {
-  FETCH_PLAYLIST_DETAILS_RESPONSE
-} from '../PlaylistDetailsView/playlistDetails.actionTypes';
+  ADD_TO_PLAYER_QEUEUE
+} from './playerView.actionTypes';
 import db from '../../db';
 
 export const fetchCurrentTrackURL = (track) => {
@@ -77,19 +77,14 @@ export const fetchCurrentTrackURL = (track) => {
   }
 }
 
-export const generatePlayList = (currentPlaylist, currentTrack) => {
+export const generatePlayList = (playerQueue, currentTrack) => {
 
   return dispatch => {
 
-    if (currentPlaylist) {
+    if (playerQueue && playerQueue.length > 0) {
 
-      const { playlistDetail } = currentPlaylist;
-
-      if (playlistDetail && playlistDetail.tracks) {
-
-        const currentTrackIndex = playlistDetail.tracks.findIndex(track => track.track_id === currentTrack.track_id);
-        if (isNumber(currentTrackIndex)) return;
-      }
+      const currentTrackIndex = playerQueue.findIndex(track => track.track_id === currentTrack.track_id);
+      if (isNumber(currentTrackIndex)) return;
     }
 
     apiPost({
@@ -99,10 +94,11 @@ export const generatePlayList = (currentPlaylist, currentTrack) => {
     .then(data => {
       const tracks = data.tracks ?? [];
       tracks.unshift(currentTrack);
+
       dispatch({
-        type: FETCH_PLAYLIST_DETAILS_RESPONSE,
-        payload: {...{ tracks }},
-      });
+        type: ADD_TO_PLAYER_QEUEUE,
+        payload: tracks,
+      })
     });
   }
 }
@@ -141,33 +137,31 @@ export const addToFavorite = async (currentTrack) => {
 export const skipToPrevious = () => {
   return (dispatch, getState) => {
     const state = getState();
-    const currentPlaylistDetails = state.playlistDetails;
+    const playerQueue = state.player.playerQueue;
     const currentTrack = state.SRPA.currentPlayTrack;
-    const { playlistDetail } = currentPlaylistDetails;
 
-    if (!playlistDetail) return;
+    if (!playerQueue || playerQueue.length === 0) return;
 
-    const currentTrackIndex = playlistDetail.tracks.findIndex(track => track.track_id === currentTrack.track_id);
+    const currentTrackIndex = playerQueue.findIndex(track => track.track_id === currentTrack.track_id);
     if (!isNumber(currentTrackIndex)) return;
 
-    const nextIndex = currentTrackIndex === 0 ? playlistDetail.tracks.length - 1 : currentTrackIndex - 1;
-    dispatch(fetchCurrentTrackURL(playlistDetail.tracks[nextIndex]));
+    const nextIndex = currentTrackIndex === 0 ? playerQueue.length - 1 : currentTrackIndex - 1;
+    dispatch(fetchCurrentTrackURL(playerQueue[nextIndex]));
   }
 }
 
 export const skipToNext = () => {
   return (dispatch, getState) => {
     const state = getState();
-    const currentPlaylistDetails = state.playlistDetails;
+    const playerQueue = state.player.playerQueue;
     const currentTrack = state.SRPA.currentPlayTrack;
-    const { playlistDetail } = currentPlaylistDetails;
 
-    if (!playlistDetail) return;
+    if (!playerQueue || playerQueue.length === 0) return;
 
-    const currentTrackIndex = playlistDetail.tracks.findIndex(track => track.track_id === currentTrack.track_id);
+    const currentTrackIndex = playerQueue.findIndex(track => track.track_id === currentTrack.track_id);
     if (!isNumber(currentTrackIndex)) return;
 
-    const nextIndex = currentTrackIndex === playlistDetail.tracks.length - 1 ? 0 : currentTrackIndex + 1;
-    dispatch(fetchCurrentTrackURL(playlistDetail.tracks[nextIndex]));
+    const nextIndex = currentTrackIndex === playerQueue.length - 1 ? 0 : currentTrackIndex + 1;
+    dispatch(fetchCurrentTrackURL(playerQueue[nextIndex]));
   }
 }

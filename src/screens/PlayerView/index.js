@@ -11,14 +11,14 @@ import { fetchCurrentTrackURL, generatePlayList, addToFavorite } from './playerV
 export default function PlayerView() {
 
   const dispatch = useDispatch();
-  const { getCurrentTrack, getCurrentPlaylistDetails } = useAppAccessor();
+  const { getCurrentTrack, getPlayerQueue } = useAppAccessor();
   const currentPlayTrack = getCurrentTrack();
-  const currentPlaylistDetails = getCurrentPlaylistDetails();
-  const { artwork_large, track_title, secondary_language, duration } = currentPlayTrack;
+  const playerQueue = getPlayerQueue();
+  const { artwork_large, artwork_medium, track_title, secondary_language, duration } = currentPlayTrack;
 
   useEffect(() => {
     dispatch(fetchCurrentTrackURL(currentPlayTrack));
-    dispatch(generatePlayList(currentPlaylistDetails, currentPlayTrack));
+    dispatch(generatePlayList(playerQueue, currentPlayTrack));
   }, []);
 
   return (
@@ -26,7 +26,7 @@ export default function PlayerView() {
       <Header title={track_title} />
       <View style={{ flex: 1}}>
         <Image 
-          source={{ uri: convertToSSL(artwork_large)}}
+          source={{ uri: convertToSSL(artwork_large ?? artwork_medium)}}
           style={styles.mainImage}
           resizeMethod={'resize'}
           resizeMode={'contain'}

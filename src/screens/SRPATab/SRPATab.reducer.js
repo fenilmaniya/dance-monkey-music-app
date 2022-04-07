@@ -1,11 +1,15 @@
 import {
   SET_CURRENT_PLAY_TRACK,
   SET_CURRENT_PLAYLIST,
+  SET_CURRENT_ALBUM,
+  SET_CURRENT_ARTIST,
 } from './SRPATab.actionTypes';
 
 const initialState = {
   currentPlayTrack: null,
   currentPlaylist: null,
+  currentAlbum: null,
+  currentArtist: null,
 }
 
 export default function SRPATabReducer(state = initialState, action) {
@@ -19,10 +23,25 @@ export default function SRPATabReducer(state = initialState, action) {
         }
       }
     case SET_CURRENT_PLAYLIST:
-      console.log('tracks', action.payload)
       return {
         ...state,
         currentPlaylist: {
+          ...action.payload,
+        }
+      }
+
+    case SET_CURRENT_ALBUM:
+      return {
+        ...state,
+        currentAlbum: {
+          ...action.payload,
+        }
+      }
+
+    case SET_CURRENT_ARTIST:
+      return {
+        ...state,
+        currentArtist: {
           ...action.payload,
         }
       }

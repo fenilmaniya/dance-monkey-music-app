@@ -10,12 +10,10 @@ export default function SRPATrackList() {
     tracks,
   } = getHome();
 
-  // console.log('tracks', tracks)
-
   return (
     <>
       { (!loading && (tracks ?? []).length===0 )&& <NoResultFound /> }
-      <TrackList {...{tracks}} />
+      <TrackList {...{tracks}} fromSearch={true} />
     </>
   )
 }

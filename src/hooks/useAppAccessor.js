@@ -21,6 +21,26 @@ const useAppAccessor = () => {
   const getCurrentPlaylistDetails = useSelector(state => {
     return state.playlistDetails
   });
+  
+  const getPlayerQueue = useSelector(state => {
+    return state.player.playerQueue
+  });
+
+  const getCurrentAlbum = useSelector(state => {
+    return state.SRPA.currentAlbum
+  });
+
+  const getCurrentAlbumDetails = useSelector(state => {
+    return state.albumDetails
+  });
+
+  const getCurrentArtist = useSelector(state => {
+    return state.SRPA.currentArtist
+  });
+
+  const getCurrentArtistDetails = useSelector(state => {
+    return state.artistDetails
+  });
 
   return {
     getApp: () => getApp,
@@ -28,6 +48,11 @@ const useAppAccessor = () => {
     getCurrentTrack: () => getCurrentTrack,
     getCurrentPlaylist: () => getCurrentPlaylist,
     getCurrentPlaylistDetails: () => getCurrentPlaylistDetails,
+    getPlayerQueue: () => getPlayerQueue,
+    getCurrentAlbum: () => getCurrentAlbum,
+    getCurrentAlbumDetails: () => getCurrentAlbumDetails,
+    getCurrentArtist: () => getCurrentArtist,
+    getCurrentArtistDetails: () => getCurrentArtistDetails,
   }
 }
 
