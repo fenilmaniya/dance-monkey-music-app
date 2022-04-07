@@ -29,9 +29,9 @@ export const fetchCurrentTrackURL = (track) => {
     const app = state.app;
     const { api_secret } = app;
 
-    if (track.iid) {
+    if (track.iid || track.entity_id) {
 
-      const res = await fetch(`https://gaana.com/apiv2?type=songDetail&seokey=${track.seo}`, { method: 'post'})
+      const res = await fetch(`https://gaana.com/apiv2?type=songDetail&seokey=${track.seo ?? track.seokey}`, { method: 'post'})
       if (res.ok && res.status == 200) {
         const json = await res.json();
         track = json.tracks[0];

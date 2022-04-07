@@ -11,7 +11,9 @@ export default function PlaylistDetailsView() {
   const dispatch = useDispatch();
   const { getCurrentPlaylist, getCurrentPlaylistDetails } = useAppAccessor();
   const currentPlaylistDetails = getCurrentPlaylistDetails();
-  const { title, playlist_id, id } = getCurrentPlaylist();
+  const { title, ti, playlist_id, id } = getCurrentPlaylist();
+
+  console.log(getCurrentPlaylist());
 
   const { loading, playlistDetail } = currentPlaylistDetails;
   const tracks = playlistDetail?.tracks ?? [];
@@ -28,7 +30,7 @@ export default function PlaylistDetailsView() {
 
   return(
     <View style={styles.container}>
-      <Header title={title} />
+      <Header title={title ?? ti} />
      
       <View style={{ flex: 1}}>
         {

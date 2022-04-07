@@ -57,7 +57,7 @@ export default function TrackList({ tracks, fromSearch }) {
       style={{ backgroundColor: colors.black, }}
       showsVerticalScrollIndicator={false}
       renderItem={renderItem}
-      keyExtractor={(item, index) => `track-${item.track_id ?? item.id}`}
+      keyExtractor={(item, index) => `track-${item.track_id ?? item.id ?? item.entity_id}`}
     />
   )
 }

@@ -11,18 +11,18 @@ export default function AlbumDetailsView() {
   const dispatch = useDispatch();
   const { getCurrentAlbum, getCurrentAlbumDetails } = useAppAccessor();
   const currentAlbumDetails = getCurrentAlbumDetails();
-  const { title, seokey } = getCurrentAlbum();
+  const { title, ti, seokey, seo } = getCurrentAlbum();
 
   const { loading, albumDetail } = currentAlbumDetails;
   const tracks = albumDetail?.tracks ?? [];
 
   useEffect(() => {
-    dispatch(fetchAlbumDetails(seokey));
+    dispatch(fetchAlbumDetails(seokey ?? seo));
   }, [])
 
   return(
     <View style={styles.container}>
-      <Header title={title} />
+      <Header title={title ?? ti} />
      
       <View style={{ flex: 1}}>
         {
