@@ -13,7 +13,7 @@ export default function SRPATrackList() {
   return (
     <>
       { (!loading && (tracks ?? []).length===0 )&& <NoResultFound /> }
-      <TrackList {...{tracks}} />
+      <TrackList {...{tracks}} fromSearch={true} />
     </>
   )
 }
