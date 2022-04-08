@@ -31,10 +31,14 @@ export const fetchCurrentTrackURL = (track) => {
 
     if (track.iid || track.entity_id) {
 
-      const res = await fetch(`https://gaana.com/apiv2?type=songDetail&seokey=${track.seo ?? track.seokey}`, { method: 'post'})
-      if (res.ok && res.status == 200) {
-        const json = await res.json();
-        track = json.tracks[0];
+      const res = await apiPost({
+        app,
+        isOld: false,
+        needHaeder: false,
+        route: `${urls.song_details}${track.seo ?? track.seokey}`
+      })
+      if (res) {
+        track = res.tracks[0];
         dispatch({
           type: SET_CURRENT_PLAY_TRACK,
           payload: {
@@ -156,10 +160,11 @@ export const skipToPrevious = () => {
     const state = getState();
     const playerQueue = state.player.playerQueue;
     const currentTrack = state.SRPA.currentPlayTrack;
+    const currentTrackId = currentTrack.track_id ?? currentTrack.iid;
 
     if (!playerQueue || playerQueue.length === 0) return;
 
-    const currentTrackIndex = playerQueue.findIndex(track => track.track_id === currentTrack.track_id);
+    const currentTrackIndex = playerQueue.findIndex(track => (track.track_id ?? track.iid) === currentTrackId);
     if (!isNumber(currentTrackIndex)) return;
 
     const nextIndex = currentTrackIndex === 0 ? playerQueue.length - 1 : currentTrackIndex - 1;
@@ -172,10 +177,13 @@ export const skipToNext = () => {
     const state = getState();
     const playerQueue = state.player.playerQueue;
     const currentTrack = state.SRPA.currentPlayTrack;
+    const currentTrackId = currentTrack.track_id ?? currentTrack.iid;
 
     if (!playerQueue || playerQueue.length === 0) return;
-
-    const currentTrackIndex = playerQueue.findIndex(track => track.track_id === currentTrack.track_id);
+    
+    const currentTrackIndex = playerQueue.findIndex(track => (track.track_id ?? track.iid) === currentTrackId);
+    console.log(currentTrackIndex)
+    console.log(playerQueue.map(track => track.track_id ?? track.iid), currentTrackId);
     if (!isNumber(currentTrackIndex)) return;
 
     const nextIndex = currentTrackIndex === playerQueue.length - 1 ? 0 : currentTrackIndex + 1;
