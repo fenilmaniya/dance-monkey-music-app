@@ -69,7 +69,7 @@ jobs:
         echo -e "VERSIONCODE=900" >> ./gradle.properties
         echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
         echo -e "BugsnagAPIKey=\"\"" >> ./gradle.properties
-        echo $KEYSTORE_BASE64 | base64 --decode > ./android/$KEYSTORE
+        echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
         echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
         echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
         echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
