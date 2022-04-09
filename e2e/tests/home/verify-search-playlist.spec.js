@@ -1,4 +1,4 @@
-const { validateNextPrevious } = require("../helpers/TrackHelper");
+const { validateNextPrevious } = require("../../helpers/TrackHelper");
 
 describe('Example', () => {
 
