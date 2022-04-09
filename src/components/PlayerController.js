@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import TrackPlayer, { useTrackPlayerEvents, Event, State } from 'react-native-track-player';
 import { useDispatch } from 'react-redux';
@@ -15,7 +15,7 @@ export default function PlayerController() {
   const [playerState, setPlayerState] = useState(null);
 
   const dispatch = useDispatch();
-
+  
   useTrackPlayerEvents(events, (event) => {
     if (event.type === Event.PlaybackError) {
       console.warn('An error occured while playing the current track.');
@@ -28,6 +28,7 @@ export default function PlayerController() {
       dispatch(skipToNext());
     }
   });
+
 
   const isPlaying = playerState === State.Playing;
 

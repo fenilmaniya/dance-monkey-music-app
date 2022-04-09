@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAppAccessor } from "../../hooks";
 import { colors } from '../../constants';
 import { convertToSSL } from '../../utils';
-import { playTrack } from './SRPATab.actions';
+import { setCurrentArtist } from './SRPATab.actions';
 import { NoResultFound } from '../../components';
 
 export default function TrackList() {
@@ -23,9 +23,9 @@ export default function TrackList() {
     return (
       <TouchableOpacity
         onPress={() => {
-          dispatch(playTrack(item))
+          dispatch(setCurrentArtist(item))
             .then(() => {
-              navigation.navigate('full-screen-player');
+              navigation.navigate('artist-details');
             });
         }}
         style={styles.itemContainer}>

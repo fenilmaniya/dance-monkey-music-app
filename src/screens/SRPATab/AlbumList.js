@@ -5,11 +5,10 @@ import { useNavigation } from '@react-navigation/native';
 import { useAppAccessor } from "../../hooks";
 import { colors } from '../../constants';
 import { convertToSSL } from '../../utils';
-import { playTrack } from './SRPATab.actions';
+import { setCurrentAlbum } from './SRPATab.actions';
 import { NoResultFound } from '../../components';
 
 export default function AlbumList() {
-
 
   const { getHome }= useAppAccessor();
   const {
@@ -24,10 +23,10 @@ export default function AlbumList() {
     return (
       <TouchableOpacity
         onPress={() => {
-          // dispatch(playTrack(item))
-          //   .then(() => {
-          //     navigation.navigate('full-screen-player');
-          //   });
+          dispatch(setCurrentAlbum(item))
+            .then(() => {
+              navigation.navigate('album-details');
+            });
         }}
         style={styles.itemContainer}>
         <Image 
