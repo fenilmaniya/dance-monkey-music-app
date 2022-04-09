@@ -52,11 +52,13 @@ export default function PlayerController() {
   return (
     <View style={styles.container}>
       <TouchableOpacity 
+        testID={'player-previous'}
         onPress={handlePrevious}
         style={styles.iconContainer}>
         <Icon name="previous" fill="#fff" height="24" width="24" />
       </TouchableOpacity>
       <TouchableOpacity
+        testID={'player-play-pause'}
         onPress={handlePlayPause}
         style={[
           styles.iconContainer,
@@ -66,6 +68,7 @@ export default function PlayerController() {
         <Icon name={`${isPlaying ? 'pause' : 'play'}`} fill="#fff" height="30" width="30" />
       </TouchableOpacity>
       <TouchableOpacity 
+        testID={'player-next'}
         onPress={handleNext}
         style={styles.iconContainer}>
         <Icon name="next" fill="#fff" height="24" width="24" />

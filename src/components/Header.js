@@ -11,6 +11,7 @@ export default function Header({ title }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
+        testID={'back-button'}
         onPress={() => {
           navigation.goBack();
         }}

@@ -22,6 +22,7 @@ export default function App() {
     TrackPlayer.setupPlayer({});
 
     TrackPlayer.updateOptions({
+      stopWithApp: true,
       // Media controls capabilities
       capabilities: [
           Capability.Play,

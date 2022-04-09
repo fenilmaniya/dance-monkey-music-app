@@ -79,12 +79,30 @@ function Searchbar() {
     <Tab.Navigator
       tabBar={props => <MyTabBar {...props} />}
     >
-      <Tab.Screen 
+      <Tab.Screen
+        options={{
+          tabBarTestID: 'songs-tab'
+        }}
         name="Songs"
         component={TrackList} />
-      <Tab.Screen name="Albums" component={AlbumList} />
-      <Tab.Screen name="Artists" component={ArtistList} />
-      <Tab.Screen name="Playlists" component={PlayList} />
+      <Tab.Screen 
+        options={{
+          tabBarTestID: 'albums-tab'
+        }}
+        name="Albums" 
+        component={AlbumList} />
+      <Tab.Screen 
+        options={{
+          tabBarTestID: 'artists-tab'
+        }}
+        name="Artists" 
+        component={ArtistList} />
+      <Tab.Screen 
+        options={{
+          tabBarTestID: 'playlists-tab'
+        }}
+        name="Playlists" 
+        component={PlayList} />
     </Tab.Navigator>
   );
 }

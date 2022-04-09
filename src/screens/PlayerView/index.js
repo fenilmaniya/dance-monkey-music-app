@@ -37,6 +37,7 @@ export default function PlayerView() {
         <View style={{ flexDirection: 'row', alignItems: 'center'}}>
           <View style={styles.textContainer}>
             <Text 
+              testID={'player-track-title'}
               numberOfLines={1}
               style={styles.itemTitle}>
               {track_title ?? ti ?? ''}

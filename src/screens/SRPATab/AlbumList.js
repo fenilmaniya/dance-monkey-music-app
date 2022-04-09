@@ -19,9 +19,10 @@ export default function AlbumList() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity
+        testID={`album-${index}`}
         onPress={() => {
           dispatch(setCurrentAlbum(item))
             .then(() => {
@@ -56,6 +57,7 @@ export default function AlbumList() {
         data={album}
         style={{ backgroundColor: colors.black, }}
         renderItem={renderItem}
+        testID={'album-list'}
         keyExtractor={(item, index) => `album-${item.album_id ?? item.id}`}
       />
     </>

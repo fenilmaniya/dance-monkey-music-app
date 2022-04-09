@@ -106,7 +106,7 @@ export const generatePlayList = (playerQueue, currentTrack) => {
     if (playerQueue && playerQueue.length > 0) {
 
       const currentTrackIndex = playerQueue.findIndex(track => track.track_id === currentTrack.track_id);
-      if (isNumber(currentTrackIndex)) return;
+      if (isNumber(currentTrackIndex) && currentTrackIndex>=0) return;
     }
 
     apiPost({
@@ -160,11 +160,11 @@ export const skipToPrevious = () => {
     const state = getState();
     const playerQueue = state.player.playerQueue;
     const currentTrack = state.SRPA.currentPlayTrack;
-    const currentTrackId = currentTrack.track_id ?? currentTrack.iid;
+    const currentTrackId = currentTrack.track_id ?? currentTrack.iid ?? currentTrack.entity_id;
 
     if (!playerQueue || playerQueue.length === 0) return;
 
-    const currentTrackIndex = playerQueue.findIndex(track => (track.track_id ?? track.iid) === currentTrackId);
+    const currentTrackIndex = playerQueue.findIndex(track => (track.track_id ?? track.iid ?? track.entity_id) === currentTrackId);
     if (!isNumber(currentTrackIndex)) return;
 
     const nextIndex = currentTrackIndex === 0 ? playerQueue.length - 1 : currentTrackIndex - 1;
@@ -177,13 +177,11 @@ export const skipToNext = () => {
     const state = getState();
     const playerQueue = state.player.playerQueue;
     const currentTrack = state.SRPA.currentPlayTrack;
-    const currentTrackId = currentTrack.track_id ?? currentTrack.iid;
+    const currentTrackId = currentTrack.track_id ?? currentTrack.iid ?? currentTrack.entity_id;
 
     if (!playerQueue || playerQueue.length === 0) return;
     
-    const currentTrackIndex = playerQueue.findIndex(track => (track.track_id ?? track.iid) === currentTrackId);
-    console.log(currentTrackIndex)
-    console.log(playerQueue.map(track => track.track_id ?? track.iid), currentTrackId);
+    const currentTrackIndex = playerQueue.findIndex(track => (track.track_id ?? track.iid ?? track.entity_id) === currentTrackId);
     if (!isNumber(currentTrackIndex)) return;
 
     const nextIndex = currentTrackIndex === playerQueue.length - 1 ? 0 : currentTrackIndex + 1;

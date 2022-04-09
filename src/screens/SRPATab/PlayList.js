@@ -20,9 +20,10 @@ export default function PlayList() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity
+        testID={`playlist-${index}`}
         onPress={() => {
           dispatch(setCurrentPlaylist(item))
             .then(() => {
@@ -57,6 +58,7 @@ export default function PlayList() {
         data={playlist}
         style={{ backgroundColor: colors.black, }}
         renderItem={renderItem}
+        testID={'play-list'}
         keyExtractor={(item, index) => `playlist-${item.playlist_id ?? item.id}`}
       />
     </>

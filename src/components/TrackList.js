@@ -14,9 +14,10 @@ export default function TrackList({ tracks, fromSearch }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity
+        testID={`track-${index}`}
         onPress={() => {
           if (!fromSearch) {
             dispatch({
@@ -57,6 +58,7 @@ export default function TrackList({ tracks, fromSearch }) {
       style={{ backgroundColor: colors.black, }}
       showsVerticalScrollIndicator={false}
       renderItem={renderItem}
+      testID={'track-list'}
       keyExtractor={(item, index) => `track-${item.track_id ?? item.id ?? item.entity_id}`}
     />
   )

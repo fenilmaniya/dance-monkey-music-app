@@ -14,7 +14,8 @@ export default function Searchbar() {
   }, 200)
 
   return (
-    <TextInput 
+    <TextInput
+      testID='search-bar'
       style={styles.textInput}
       placeholder={'Search...'}
       placeholderTextColor={colors.black}
