@@ -33,7 +33,7 @@ jobs:
         path: |
           android/app/build/outputs/apk/e2ePlay/release
           android/app/build/outputs/apk/androidTest/e2ePlay/release
-        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('package-lock.json') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Node
       if: steps.detoxappcache.outputs.cache-hit != 'true'
@@ -47,15 +47,15 @@ jobs:
       id: npmcache
       with:
         path: node_modules
-        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
     - name: Rebuild detox
       if: steps.detoxappcache.outputs.cache-hit != 'true' && steps.npmcache.outputs.cache-hit == 'true'
-      run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+      run: npm detox clean-framework-cache && npm detox build-framework-cache
 
     - name: Install Dependencies
       if: steps.detoxappcache.outputs.cache-hit != 'true' && steps.npmcache.outputs.cache-hit != 'true'
-      run: yarn install
+      run: npm install
 
     - name: Gradle config
       working-directory: android
@@ -135,7 +135,7 @@ jobs:
         path: |
           android/app/build/outputs/apk/e2ePlay/release
           android/app/build/outputs/apk/androidTest/e2ePlay/release
-        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('package-lock.json') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
       if: ${{ steps.detoxappcache.outputs.cache-hit != 'true' && steps.last_run_status.outputs.last_run_status != 'success' }}
@@ -153,11 +153,11 @@ jobs:
       id: npmcache
       with:
         path: node_modules
-        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
     - name: Install Dependencies
       if: ${{ steps.npmcache.outputs.cache-hit != 'true' && steps.last_run_status.outputs.last_run_status != 'success' }}
-      run: yarn install
+      run: npm install
 
     - name: Run tests
       uses: ReactiveCircus/android-emulator-runner@v2.19.1
@@ -171,7 +171,7 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/${{ matrix.folder }} --configuration and.emu.release || yarn detox test e2e/tests/${{ matrix.folder }} --configuration and.emu.release
+        script: npm detox test e2e/tests/${{ matrix.folder }} --configuration and.emu.release || npm detox test e2e/tests/${{ matrix.folder }} --configuration and.emu.release
 
     - name: Save run status
       if: steps.last_run_status.outputs.last_run_status != 'success'
