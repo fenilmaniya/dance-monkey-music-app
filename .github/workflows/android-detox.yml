@@ -82,7 +82,7 @@ jobs:
         echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
         echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
         ./gradlew clean
-    - run: ./gradlew app:assembleRelease app:assembleReleaseAndroidTest -DtestBuildType=release
+    - run: ./gradlew app:assembleRelease -DtestBuildType=release
       if: steps.detoxappcache.outputs.cache-hit != 'true'
       working-directory: android
 
