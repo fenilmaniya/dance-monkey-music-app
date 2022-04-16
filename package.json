@@ -1,4 +1,4 @@
-  {
+{
   "name": "DanceMonkey",
   "version": "0.0.1",
   "private": true,
@@ -8,8 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "build-detox-android": "detox build -c android.emu.debug",
-    "test-detox-android": "detox test -c android.emu.debug"
+    "build-detox-android": "detox test ./e2e/tests/**/* mocha --timeout 30000 -c android.emu.debug",
+    "test-detox-android": "detox test ./e2e/tests/**/* mocha --timeout 30000 -c android.emu.debug",
   },
   "dependencies": {
     "@nozbe/watermelondb": "^0.20.0",
@@ -61,7 +61,7 @@
         "build": "xcodebuild -workspace ios/DanceMonkey.xcworkspace -scheme DanceMonkey -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
-        "type": "iPhone 8"
+          "type": "iPhone 8"
         }
       },
       "ios.sim.release": {
@@ -69,28 +69,34 @@
         "build": "xcodebuild -workspace ios/DanceMonkey.xcworkspace -scheme DanceMonkey -configuration Release -sdk iphonesimulator -derivedDataPath ios/build",
         "type": "ios.simulator",
         "device": {
-        "type": "iPhone 8"
+          "type": "iPhone 8"
         },
         "artifacts": {
-        "plugins": {
-          "screenshot": {
-          "enabled": true,
-          "shouldTakeAutomaticSnapshots": true,
-          "keepOnlyFailedTestsArtifacts": true,
-          "takeWhen": {
-            "testStart": true,
-            "testDone": true,
-            "appNotReady": true
+          "plugins": {
+            "screenshot": {
+              "enabled": true,
+              "shouldTakeAutomaticSnapshots": true,
+              "keepOnlyFailedTestsArtifacts": true,
+              "takeWhen": {
+                "testStart": true,
+                "testDone": true,
+                "appNotReady": true
+              }
+            }
           }
-          }
-        }
         }
       },
       "android.emu.debug": {
-        "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
-        "build": "cd android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+        "device": "Pixel_2_API_29",
         "type": "android.emulator",
-        "name": "emu"
+        "binaryPath": "android/app/build/outputs/apk/debug/app-debug.apk",
+        "build": "cd android && ./gradlew assembleDebug app:assembleDebugAndroidTest -DtestBuildType=debug && cd .."
+      },
+      "android.emu.release": {
+        "device": "Pixel_API_28_AOSP",
+        "type": "android.emulator",
+        "binaryPath": "android/app/build/outputs/apk/release/app-release.apk",
+        "build": "cd android && ./gradlew app:assembleRelease app:assembleReleaseAndroidTest -DtestBuildType=release && cd .."
       }
     }
   }
