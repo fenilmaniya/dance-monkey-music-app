@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "build-detox-android": "detox test ./e2e/tests/**/* mocha --timeout 30000 -c android.emu.debug",
-    "test-detox-android": "detox test ./e2e/tests/**/* mocha --timeout 30000 -c android.emu.debug",
+    "test-detox-android": "detox test ./e2e/tests/**/* mocha --timeout 30000 -c android.emu.debug"
   },
   "dependencies": {
     "@nozbe/watermelondb": "^0.20.0",
