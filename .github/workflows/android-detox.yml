@@ -80,7 +80,7 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
         cache: 'gradle'
-    - run: ./gradlew app:assembleE2ePlayRelease app:assembleE2ePlayReleaseAndroidTest -DtestBuildType=release
+    - run: ./gradlew app:assembleRelease app:assembleReleaseAndroidTest -DtestBuildType=release
       if: steps.detoxappcache.outputs.cache-hit != 'true'
       working-directory: android
 
