@@ -27,6 +27,22 @@ const styles = StyleSheet.create({
   buttonContainer: {
     padding: 10,
   },
+
+  // mini player
+  miniPlayerImage: {
+    height: 40,
+    width: 40,
+  },
+  miniPlayerTextContainer: {
+    flex: 1,
+  },
+  miniPlayerItemTitle: {
+    color: colors.white,
+    fontWeight: 'bold',
+  },
+  miniPlayerItemSubTitle: {
+    color: colors.white,
+  },
 });
 
 export default styles;

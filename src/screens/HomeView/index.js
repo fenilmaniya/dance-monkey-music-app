@@ -8,6 +8,7 @@ import Searchbar from './Searchbar';
 import SearchResult from './SearchResult';
 import styles from './styles';
 import { setCurrentPlaylist } from '../SRPATab/SRPATab.actions';
+import MiniPlayer from '../PlayerView/MiniPlayer';
 
 export default function LoadingView() {
   
@@ -37,6 +38,8 @@ export default function LoadingView() {
         </TouchableOpacity> 
       </View>
       <SearchResult />
+
+      <MiniPlayer />
     </SafeAreaView>
   )
 }

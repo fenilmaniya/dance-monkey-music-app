@@ -11,7 +11,8 @@ const events = [
   Event.PlaybackQueueEnded
 ];
 
-export default function PlayerController() {
+export default function PlayerController({ mini = false }) {
+  const iconSize = mini ? 20 : 24;
   const [playerState, setPlayerState] = useState(null);
 
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ export default function PlayerController() {
         testID={'player-previous'}
         onPress={handlePrevious}
         style={styles.iconContainer}>
-        <Icon name="previous" fill="#fff" height="24" width="24" />
+        <Icon name="previous" fill="#fff" height={iconSize} width={iconSize} />
       </TouchableOpacity>
       <TouchableOpacity
         testID={'player-play-pause'}
@@ -65,13 +66,13 @@ export default function PlayerController() {
           { marginLeft: 4 }
         ]}
       >
-        <Icon name={`${isPlaying ? 'pause' : 'play'}`} fill="#fff" height="30" width="30" />
+        <Icon name={`${isPlaying ? 'pause' : 'play'}`} fill="#fff" height={iconSize + 6} width={iconSize + 6} />
       </TouchableOpacity>
       <TouchableOpacity 
         testID={'player-next'}
         onPress={handleNext}
         style={styles.iconContainer}>
-        <Icon name="next" fill="#fff" height="24" width="24" />
+        <Icon name="next" fill="#fff" height={iconSize} width={iconSize} />
       </TouchableOpacity>
     </View>
   )
@@ -81,7 +82,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 10,
     flexDirection: 'row'
   },
   iconContainer: {

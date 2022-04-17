@@ -5,6 +5,7 @@ import { Header, TrackList } from '../../components';
 import { useAppAccessor } from '../../hooks';
 import styles from './styles';
 import { fetchArtistDetails } from './artistDetails.actions'
+import MiniPlayer from '../PlayerView/MiniPlayer';
 
 export default function ArtistDetailsView() {
 
@@ -30,6 +31,8 @@ export default function ArtistDetailsView() {
         }
         <TrackList {...{tracks}} />
       </View>
+
+      <MiniPlayer />
     </View>
   )
 }
