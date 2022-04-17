@@ -10,6 +10,10 @@ const useAppAccessor = () => {
     return state.home;
   });
 
+  const getMyWork = useSelector(state => {
+    return state.mywork;
+  });
+
   const getCurrentTrack = useSelector(state => {
     return state.SRPA.currentPlayTrack
   });
@@ -53,6 +57,7 @@ const useAppAccessor = () => {
     getCurrentAlbumDetails: () => getCurrentAlbumDetails,
     getCurrentArtist: () => getCurrentArtist,
     getCurrentArtistDetails: () => getCurrentArtistDetails,
+    getMyWork: () => getMyWork,
   }
 }
 

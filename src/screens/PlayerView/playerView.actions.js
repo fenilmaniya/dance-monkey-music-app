@@ -4,6 +4,7 @@ import cryptoJs from "crypto-js";
 import { Q } from '@nozbe/watermelondb';
 import { urls } from '../../constants';
 import { encodeParamsForUrl } from '../../utils/url';
+import getTrackId from '../../utils/getTrackId';
 import { apiGet, apiPost } from "../../dao";
 import {
   SET_CURRENT_PLAY_TRACK
@@ -13,9 +14,25 @@ import {
   ADD_TO_PLAYER_QEUEUE
 } from './playerView.actionTypes';
 import db from '../../db';
+import { fetchFavorites } from '../LoadingView/loadingView.actions';
 
 export const fetchCurrentTrackURL = (track) => {
   return async (dispatch, getState) => {
+
+    const state = getState();
+    const app = state.app;
+    const { api_secret, favorite_tracks } = app;
+
+    console.log(favorite_tracks, getTrackId(track))
+
+    const isFavorite = favorite_tracks.includes(getTrackId(track));
+    dispatch({
+      type: SET_CURRENT_PLAY_TRACK,
+      payload: {
+        ...track,
+        isFavorite
+      }
+    });
 
     let trackIndex = await TrackPlayer.getCurrentTrack();
     
@@ -24,10 +41,6 @@ export const fetchCurrentTrackURL = (track) => {
       let trackObj = await TrackPlayer.getTrack(trackIndex);
       if (track && trackObj.track_id === (track?.track_id ?? track.iid)) return;
     }
-    
-    const state = getState();
-    const app = state.app;
-    const { api_secret } = app;
 
     if (track.iid || track.entity_id) {
 
@@ -36,13 +49,14 @@ export const fetchCurrentTrackURL = (track) => {
         isOld: false,
         needHaeder: false,
         route: `${urls.song_details}${track.seo ?? track.seokey}`
-      })
+      });
       if (res) {
         track = res.tracks[0];
         dispatch({
           type: SET_CURRENT_PLAY_TRACK,
           payload: {
             ...track,
+            isFavorite
           }
         });
       } else {
@@ -76,6 +90,7 @@ export const fetchCurrentTrackURL = (track) => {
         type: SET_CURRENT_PLAY_TRACK,
         payload: {
           ...track,
+          isFavorite,
           track_url: base64.decode(d.data)
         }
       });
@@ -125,32 +140,52 @@ export const generatePlayList = (playerQueue, currentTrack) => {
   }
 }
 
-export const addToFavorite = async (currentTrack) => {
-  const favoritePlaylistCollection = db.collections.get('f_playlists');
-  const favoritePlaylist = await favoritePlaylistCollection.query(Q.where('playlist_id', 'favorites')).fetch();
+export const addToFavorite = (currentTrack, isFavorite) => {
+  return async dispatch => {
+
+    const favoritePlaylistCollection = db.collections.get('f_playlists');
+    const favoritePlaylist = await favoritePlaylistCollection.query(Q.where('playlist_id', 'favorites')).fetch();
+    
+    if (favoritePlaylist && favoritePlaylist.length > 0) {
   
-  if (favoritePlaylist && favoritePlaylist.length > 0) {
-
-    const tracks = favoritePlaylist[0].tracks;
-    if (!tracks.find(track => track.track_id === currentTrack.track_id)) {
-      tracks.push(currentTrack);
-
+      const tracks = favoritePlaylist[0].tracks;
+      let updatedTracks = tracks;
+      if (!tracks.find(track => getTrackId(track) === getTrackId(currentTrack))) {
+        updatedTracks.push(currentTrack);
+      } else {
+        updatedTracks = tracks.filter(track => getTrackId(track) !== getTrackId(currentTrack));
+      }
+  
       db.action(async () => {
-
+  
         await favoritePlaylist[0].update(FPlaylist => {
           FPlaylist.playlist_id = 'favorites',
-          FPlaylist.tracks = tracks
+          FPlaylist.tracks = updatedTracks
+        })
+        .then(() => {
+          dispatch(fetchFavorites());
+        });
+      });
+    } else {
+      db.action(async () => {
+  
+        await favoritePlaylistCollection.create(FPlaylist => {
+          FPlaylist.title = 'Favorites',
+          FPlaylist.playlist_id = 'favorites',
+          FPlaylist.tracks = [currentTrack]
+        })
+        .then(() => {
+          dispatch(fetchFavorites());
         });
       });
     }
-  } else {
-    db.action(async () => {
 
-      await favoritePlaylistCollection.create(FPlaylist => {
-        FPlaylist.title = 'Favorites',
-        FPlaylist.playlist_id = 'favorites',
-        FPlaylist.tracks = [currentTrack]
-      });
+    dispatch({
+      type: SET_CURRENT_PLAY_TRACK,
+      payload: {
+        ...currentTrack,
+        isFavorite: !isFavorite,
+      }
     });
   }
 }

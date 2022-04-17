@@ -29,11 +29,11 @@ export default function LoadingView() {
               playlist_id: 'favorites'
             }))
             .then(() => {
-              navigation.navigate('playlist-details');
+              navigation.navigate('my-work');
             });
           }}
         >
-          <Icon name="heart" fill="#fff" height="18" width="18" />
+          <Icon name="add_playlist" fill="#fff" height="18" width="18" />
         </TouchableOpacity> 
       </View>
       <SearchResult />

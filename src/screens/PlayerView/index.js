@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, View, Text, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { ProgressSlider, PlayerController, Header } from '../../components';
+import { ProgressSlider, PlayerController, Header, PlaylistSelector } from '../../components';
 import Icon from '../../lib/Icons';
 import styles from './styles';
 import { useAppAccessor } from '../../hooks';
@@ -10,11 +10,13 @@ import { fetchCurrentTrackURL, generatePlayList, addToFavorite } from './playerV
 
 export default function PlayerView() {
 
+  const [playlistSelector, setPlaylistSelector] = useState(false);
+
   const dispatch = useDispatch();
-  const { getCurrentTrack, getPlayerQueue } = useAppAccessor();
+  const { getApp, getCurrentTrack, getPlayerQueue } = useAppAccessor();
   const currentPlayTrack = getCurrentTrack();
   const playerQueue = getPlayerQueue();
-  const { artwork_large, artwork_medium, aw, track_title, ti, secondary_language, language, duration, dr } = currentPlayTrack;
+  const { artwork_large, artwork_medium, aw, track_title, ti, secondary_language, language, duration, dr, isFavorite = false } = currentPlayTrack;
 
   useEffect(() => {
     dispatch(fetchCurrentTrackURL(currentPlayTrack));
@@ -54,14 +56,30 @@ export default function PlayerView() {
             <Icon name="download" fill="#fff" height="20" width="20" />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => addToFavorite(currentPlayTrack)}
+            style={styles.buttonContainer}
+            onPress={() => {
+              setPlaylistSelector(true);
+            }}
+          >  
+            <Icon name="add_playlist" fill="#fff" height="20" width="20" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => dispatch(addToFavorite(currentPlayTrack, isFavorite))}
             style={styles.buttonContainer}>  
-            <Icon name="heart_inline" fill="#fff" height="20" width="20" />
+            <Icon name={isFavorite ? 'heart' : 'heart_inline'} fill="#fff" height="20" width="20" />
           </TouchableOpacity>
         </View>
         <ProgressSlider {...{duration, dr}} />
         <PlayerController />
       </View>
+
+      <PlaylistSelector
+        visible={playlistSelector}
+        track={currentPlayTrack}
+        onClose={() => {
+          setPlaylistSelector(false);
+        }}
+      />
     </View>
   )
 }

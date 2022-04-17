@@ -6,22 +6,21 @@ import { useAppAccessor } from '../../hooks';
 import styles from './styles';
 import { fetchPlaylistDetails, fetchFavoritePlaylistDetails } from './playlistDetails.actions'
 
-export default function PlaylistDetailsView() {
+export default function PlaylistDetailsView({ route }) {
 
   const dispatch = useDispatch();
   const { getCurrentPlaylist, getCurrentPlaylistDetails } = useAppAccessor();
   const currentPlaylistDetails = getCurrentPlaylistDetails();
   const { title, ti, playlist_id, id } = getCurrentPlaylist();
 
-  console.log(getCurrentPlaylist());
-
   const { loading, playlistDetail } = currentPlaylistDetails;
   const tracks = playlistDetail?.tracks ?? [];
 
   useEffect(() => {
-    if (playlist_id === 'favorites') {
+    const { type } = route.params; 
+    if (type && type === 'my-work') {
 
-      dispatch(fetchFavoritePlaylistDetails());
+      dispatch(fetchFavoritePlaylistDetails(playlist_id));
     } else {
       
       dispatch(fetchPlaylistDetails(playlist_id ?? id));

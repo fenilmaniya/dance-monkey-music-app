@@ -7,6 +7,7 @@ import playlistDetails from '../screens/PlaylistDetailsView/playlistDetails.redu
 import albumDetails from '../screens/AlbumDetailsView/albumDetails.reducer';
 import artistDetails from '../screens/ArtistDetailsView/artistDetails.reducer';
 import player from '../screens/PlayerView/playerView.reducer';
+import mywork from '../screens/MyWorkView/myWork.reducer';
 
 export default combineReducers({
   app,
@@ -16,4 +17,5 @@ export default combineReducers({
   player,
   albumDetails,
   artistDetails,
+  mywork,
 })

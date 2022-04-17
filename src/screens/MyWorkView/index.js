@@ -1,39 +1,45 @@
-import React from 'react';
-import { Text, FlatList, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { useAppAccessor } from "../../hooks";
+import { fetchMyWork, deletePlaylist } from './myWork.actions';
 import { colors } from '../../constants';
-import { convertToSSL } from '../../utils';
-import { setCurrentPlaylist } from './SRPATab.actions';
+import { useAppAccessor } from '../../hooks';
 import { NoResultFound } from '../../components';
+import { setCurrentPlaylist } from '../SRPATab/SRPATab.actions';
+import { Header, FabButton } from '../../components';
+import Icon from '../../lib/Icons';
 
-export default function PlayList() {
-  
-  const { getHome } = useAppAccessor();
+export default function MyWorkView() {
+
+  const { getMyWork } = useAppAccessor();
   const {
-    loading,
     playlist,
-  } = getHome();
+  } = getMyWork();
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    dispatch(fetchMyWork());
+  }, [])
 
   const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity
         testID={`playlist-${index}`}
         onPress={() => {
-          dispatch(setCurrentPlaylist(item))
+          dispatch(setCurrentPlaylist({
+            title: item.title,
+            playlist_id: item.playlist_id
+          }))
             .then(() => {
-              navigation.navigate('playlist-details');
+              navigation.navigate('playlist-details', {
+                type: 'my-work'
+              });
             });
         }}
         style={styles.itemContainer}>
-        <Image 
-          source={{uri: convertToSSL(item.artwork ?? item.aw ?? '')}}
-          style={styles.itemImage}
-        />
         <View style={styles.textContainer}>
           <Text 
             numberOfLines={1}
@@ -46,13 +52,17 @@ export default function PlayList() {
             {item.title ?? item.ti ?? ''}
           </Text>
         </View>
+        <TouchableOpacity onPress={() => dispatch(deletePlaylist(item.playlist_id))}>
+          <Icon name="delete" fill={'#fff'} height={20} width={20} />
+        </TouchableOpacity>
       </TouchableOpacity>
     )
   }
 
   return (
-    <>
-      { (!loading && (playlist ?? []).length===0 )&& <NoResultFound /> }
+    <View style={styles.container}>
+      <Header title={'My Work'} />
+      { (playlist ?? []).length===0 && <NoResultFound /> }
       <FlatList 
         data={playlist}
         style={{ backgroundColor: colors.black, }}
@@ -60,11 +70,17 @@ export default function PlayList() {
         testID={'play-list'}
         keyExtractor={(item, index) => `playlist-${item.playlist_id ?? item.id}`}
       />
-    </>
+      <FabButton />
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.black,
+    padding: 20,
+  },
   itemContainer: {
     flex: 1,
     flexDirection: 'row',

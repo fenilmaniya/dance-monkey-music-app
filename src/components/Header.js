@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from '../lib/Icons';
 import { colors } from '../constants';
 
-export default function Header({ title }) {
+export default function Header({ title, onBackPress }) {
 
   const navigation = useNavigation();
 
@@ -13,7 +13,13 @@ export default function Header({ title }) {
       <TouchableOpacity
         testID={'back-button'}
         onPress={() => {
-          navigation.goBack();
+          if (onBackPress) {
+            
+            onBackPress();
+          } else {
+
+            navigation.goBack();
+          }
         }}
         style={styles.iconContainer}
       >
