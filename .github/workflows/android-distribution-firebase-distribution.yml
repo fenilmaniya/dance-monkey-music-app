@@ -3,7 +3,8 @@ name: Distribute Android app to firebase app distribution
 on:
   push:
     branches:
-      - [ main, develop ]
+      - main
+      - develop
 jobs:
   dev-distribution:
     runs-on: ubuntu-latest
