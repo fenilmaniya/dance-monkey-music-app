@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from '../lib/Icons';
 import { colors } from '../constants';
 
-export default function Header({ title, onBackPress }) {
+export default function Header({ title, onBackPress, right, onRightPress }) {
 
   const navigation = useNavigation();
 
@@ -29,6 +29,18 @@ export default function Header({ title, onBackPress }) {
         style={styles.title}
         numberOfLines={1}
       >{title}</Text>
+      {
+        right && 
+          <TouchableOpacity
+            onPress={() => {
+              if (onRightPress) {
+                onRightPress();
+              }
+            }}
+          >
+            {right}
+          </TouchableOpacity>
+      }
     </View>
   )
 }

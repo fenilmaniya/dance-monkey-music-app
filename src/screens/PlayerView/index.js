@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Image, View, Text, TouchableOpacity } from 'react-native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { ProgressSlider, PlayerController, Header, PlaylistSelector } from '../../components';
 import Icon from '../../lib/Icons';
@@ -13,6 +14,8 @@ export default function PlayerView() {
   const [playlistSelector, setPlaylistSelector] = useState(false);
 
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const focused = useIsFocused();
   const { getApp, getCurrentTrack, getPlayerQueue } = useAppAccessor();
   const currentPlayTrack = getCurrentTrack();
   const playerQueue = getPlayerQueue();
@@ -21,7 +24,7 @@ export default function PlayerView() {
   useEffect(() => {
     dispatch(fetchCurrentTrackURL(currentPlayTrack));
     dispatch(generatePlayList(playerQueue, currentPlayTrack));
-  }, []);
+  }, [focused]);
 
   return (
     <View style={styles.container}>
@@ -54,6 +57,12 @@ export default function PlayerView() {
           <TouchableOpacity
             style={styles.buttonContainer}>  
             <Icon name="download" fill="#fff" height="20" width="20" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => navigation.navigate('song-queue')}
+          >  
+            <Icon name="song_queue" fill="#fff" height="22" width="22" />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonContainer}

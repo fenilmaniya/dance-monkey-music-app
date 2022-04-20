@@ -124,13 +124,35 @@ export const generatePlayList = (playerQueue, currentTrack) => {
       if (isNumber(currentTrackIndex) && currentTrackIndex>=0) return;
     }
 
+    const track_id = getTrackId(currentTrack);
     apiPost({
       isOld: false,
-      route: `${urls.similar_songs}${currentTrack.track_id ?? currentTrack.id}`
+      route: `${urls.similar_songs}${track_id}`
     })
     .then(data => {
       const tracks = data.tracks ?? [];
       tracks.unshift(currentTrack);
+
+      dispatch({
+        type: ADD_TO_PLAYER_QEUEUE,
+        payload: tracks,
+      })
+    });
+  }
+}
+
+export const updateSongQueue = (track) => {
+
+  const track_id = getTrackId(track);
+  return dispatch => {
+
+    apiPost({
+      isOld: false,
+      route: `${urls.similar_songs}${track_id}`
+    })
+    .then(data => {
+      const tracks = data.tracks ?? [];
+      tracks.unshift(track);
 
       dispatch({
         type: ADD_TO_PLAYER_QEUEUE,
