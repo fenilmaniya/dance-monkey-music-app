@@ -12,7 +12,6 @@ import { setCurrentPlaylist } from '../SRPATab/SRPATab.actions';
 import { fetchDashboardData } from './HomeView.actions';
 import MiniPlayer from '../PlayerView/MiniPlayer';
 import { TrackList } from '../../components';
-import PlayList from '../SRPATab/PlayList';
 
 export default function LoadingView() {
   
@@ -32,6 +31,7 @@ export default function LoadingView() {
       <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 10}}>
         <Searchbar disabled={true} />
         <TouchableOpacity 
+          style={{ paddingHorizontal: 4 }}
           onPress={async () => {
             dispatch(setCurrentPlaylist({
               title: 'favorites',
@@ -43,6 +43,15 @@ export default function LoadingView() {
           }}
         >
           <Icon name="add_playlist" fill="#fff" height="18" width="18" />
+        </TouchableOpacity> 
+
+        <TouchableOpacity
+          style={{ paddingHorizontal: 4 }}
+          onPress={async () => {
+            dispatch(fetchDashboardData())
+          }}
+        >
+          <Icon name="refresh" fill="#fff" height="16" width="16" />
         </TouchableOpacity> 
       </View>
 

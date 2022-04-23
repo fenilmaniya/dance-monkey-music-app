@@ -1,10 +1,11 @@
 import React from 'react';
-import { TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
 import { useDispatch } from 'react-redux';
 import { colors } from '../../constants';
 import { searchWithQuery } from './HomeView.actions';
+import Icon from '../../lib/Icons';
 
 export default function Searchbar({ disabled }) {
 
@@ -27,15 +28,27 @@ export default function Searchbar({ disabled }) {
   }
 
   return (
-    <TextInput
-      testID='search-bar'
-      style={styles.textInput}
-      placeholder={'Search...'}
-      placeholderTextColor={colors.black}
-      onChangeText={_handleTextChange}
-      autoComplete={'off'}
-      editable={!disabled}
-    />
+    <View style={{ flex: 1, flexDirection: 'row' }}>
+      <TouchableOpacity
+        testID={'back-button'}
+        onPress={() => {
+         
+          navigation.goBack();
+        }}
+        style={{ padding: 10, alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Icon name="down" fill="#fff" height="16" width="16" />
+      </TouchableOpacity>
+      <TextInput
+        testID='search-bar'
+        style={styles.textInput}
+        placeholder={'Search...'}
+        placeholderTextColor={colors.black}
+        onChangeText={_handleTextChange}
+        autoComplete={'off'}
+        editable={!disabled}
+      />
+    </View>
   )
 }
 
@@ -44,7 +57,8 @@ const styles = StyleSheet.create({
     flex: 1,
     color: colors.black,
     backgroundColor: colors.gray,
-    margin: 10,
+    marginVertical: 10,
+    marginRight: 10,
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 6,

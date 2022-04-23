@@ -2,17 +2,22 @@ import React from 'react';
 import { Text, FlatList, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { useAppAccessor } from '../hooks';
 import { colors } from '../constants';
 import { convertToSSL } from '../utils';
 import { playTrack, setCurrentPlaylist } from '../screens/SRPATab/SRPATab.actions';
 import {
   ADD_TO_PLAYER_QEUEUE
 } from '../screens/PlayerView/playerView.actionTypes';
+import getTrackId from '../utils/getTrackId';
 
 export default function TrackList({ tracks, fromSearch, horizontal, type }) {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const { getCurrentTrack } = useAppAccessor();
+  const currentPlayTrack = getCurrentTrack();
+  const currentTrackId = getTrackId(currentPlayTrack);
 
   const renderHorizontalItem = ({ item, index }) => {
     return (
@@ -39,12 +44,18 @@ export default function TrackList({ tracks, fromSearch, horizontal, type }) {
         <View style={styles.textContainer}>
           <Text 
             numberOfLines={1}
-            style={styles.itemTitle}>
+            style={[
+              styles.itemTitle,
+              currentTrackId === getTrackId(item) && { color: '#f2c039'}
+            ]}>
             {item.track_title ?? item.name ?? item.ti ?? ''}
           </Text>
           <Text 
             numberOfLines={1}
-            style={styles.itemSubTitle}>
+            style={[
+              styles.itemSubTitle,
+              currentTrackId === getTrackId(item) && { color: '#f2c039'}
+            ]}>
             {item.secondary_language ?? item.language ?? ''}
           </Text>
         </View>

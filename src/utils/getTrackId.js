@@ -1,5 +1,9 @@
 export default (track) => {
 
+  if (!track) {
+    return null;
+  }
+
   if (track.track_id) {
     return track.track_id;
   }
