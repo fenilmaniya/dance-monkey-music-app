@@ -25,7 +25,7 @@ export default function MiniPlayer() {
   const { artwork_large, artwork_medium, aw, track_title, ti, secondary_language, language, duration, dr, isFavorite = false } = currentPlayTrack;
 
   return (
-    <View style={{flexDirection: 'row', justifyContent: 'center', margin: 10,}}>
+    <View style={styles.miniPlayerContainer}>
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('full-screen-player');
@@ -35,12 +35,13 @@ export default function MiniPlayer() {
           source={{ uri: convertToSSL(artwork_large ?? artwork_medium ?? aw ?? '')}}
           style={styles.miniPlayerImage}
           resizeMethod={'resize'}
-          resizeMode={'contain'}
+          resizeMode={'cover'}
         />
       </TouchableOpacity>
 
-      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', marginLeft: 10,}}>
+      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginLeft: 10,}}>
         <TouchableOpacity
+          style={{ flex: 1}}
           onPress={() => {
             navigation.navigate('full-screen-player');
           }}

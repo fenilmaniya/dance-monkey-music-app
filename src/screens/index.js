@@ -1,5 +1,6 @@
 export { default as LoadingView } from './LoadingView';
 export { default as HomeView } from './HomeView';
+export { default as SearchView } from './HomeView/SearchView';
 export { default as PlayerView } from './PlayerView';
 export { default as SongQueueView } from './PlayerView/SongQueueView';
 export { default as PlaylistDetailsView } from './PlaylistDetailsView';

@@ -30,11 +30,13 @@ const styles = StyleSheet.create({
 
   // mini player
   miniPlayerImage: {
-    height: 40,
-    width: 40,
+    height: 50,
+    width: 50,
+    borderRadius: 4,
   },
   miniPlayerTextContainer: {
     flex: 1,
+    justifyContent: 'center'
   },
   miniPlayerItemTitle: {
     color: colors.white,
@@ -43,6 +45,14 @@ const styles = StyleSheet.create({
   miniPlayerItemSubTitle: {
     color: colors.white,
   },
+  miniPlayerContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    margin: 10, 
+    backgroundColor: '#1A1A1A',
+    borderRadius: 10,
+  }
 });
 
 export default styles;

@@ -3,6 +3,10 @@ import defaultHeader from './defaultHeader';
 
 const getBaseUrl = ({ isOld = true, app, base }) => {
 
+  if (!app && !isEmpty(base)) {
+    return base;
+  }
+
   if (!isEmpty(base)) {
     return base;
   }
@@ -10,6 +14,8 @@ const getBaseUrl = ({ isOld = true, app, base }) => {
   if (isOld) {
     return app.old_base_url;
   }
+
+  return '';
 }
 
 export default apiGet = ({isOld = true, base = '', app, route, needHaeder = false}) => {

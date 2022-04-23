@@ -9,7 +9,8 @@ import {
   ArtistDetailsView,
   MyWorkView,
   CreatePlaylist,
-  SongQueueView
+  SongQueueView,
+  SearchView,
 } from '../screens';
 
 const Stack = createNativeStackNavigator();
@@ -18,6 +19,7 @@ export default function InsideStack() {
   return (
     <Stack.Navigator mode='modal'>
 			<Stack.Screen name='Home' component={HomeView} options={{ headerShown: false }} />
+			<Stack.Screen name='search' component={SearchView} options={{ headerShown: false }} />
 			<Stack.Screen name='playlist-details' component={PlaylistDetailsView} options={{ headerShown: false }} />
 			<Stack.Screen name='album-details' component={AlbumDetailsView} options={{ headerShown: false }} />
 			<Stack.Screen name='artist-details' component={ArtistDetailsView} options={{ headerShown: false }} />

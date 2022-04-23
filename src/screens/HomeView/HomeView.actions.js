@@ -1,9 +1,13 @@
 import { urls } from '../../constants';
-import { apiGet } from '../../dao';
+import { apiGet, apiPost } from '../../dao';
+import { encodeParamsForUrl } from '../../utils/url';
 import {
   SEARCH_QUERY_REQUEST,
   SEARCH_QUERY_RESPONSE,
-  SEARCH_QUERY_ERROR
+  SEARCH_QUERY_ERROR,
+  FETCH_DASHBOARD_REQUEST,
+  FETCH_DASHBOARD_ERROR,
+  FETCH_DASHBOARD_RESPONSE,
 } from './HomeView.actionTypes';
 
 const search_type = [
@@ -83,5 +87,61 @@ export const searchWithQuery = (query) => {
 
       return Promise.all(searchArray);
     });
+  }
+}
+
+export const fetchDashboardData = () => {
+  return async dispatch => {
+    dispatch({
+      type: FETCH_DASHBOARD_REQUEST,
+    });
+
+    try {
+      
+      const promiseArray = [];
+      for (const smartFeedUrl of urls.smart_feeds) {
+
+        const params = {
+          apiPath: smartFeedUrl.url,
+          index: 1,
+          type: 'homeSec'
+        }
+
+        promiseArray.push(
+          await apiPost({
+            isOld: false,
+            route: `apiv2?${encodeParamsForUrl(params)}`
+          })
+          .then(res => {
+            
+            if (res && res?.entities && res?.entities.length > 0) {
+              return {
+                ...res,
+                type: res?.entities[0].entity_type
+              };
+            }
+
+            return res;
+          })
+        );
+
+        await Promise.all(promiseArray)
+          .then(data => {
+            dispatch({
+              type: FETCH_DASHBOARD_RESPONSE,
+              payload : {
+                smart_feeds: data,
+              }
+            });
+          });
+      }
+
+    } catch(err) {
+      console.log(err);
+
+      dispatch({
+        type: FETCH_DASHBOARD_ERROR,
+      });
+    }
   }
 }

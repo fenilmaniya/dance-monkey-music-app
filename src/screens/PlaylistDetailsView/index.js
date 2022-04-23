@@ -6,31 +6,34 @@ import { useAppAccessor } from '../../hooks';
 import styles from './styles';
 import { fetchPlaylistDetails, fetchFavoritePlaylistDetails } from './playlistDetails.actions'
 import MiniPlayer from '../PlayerView/MiniPlayer';
+import getPlaylistId from '../../utils/getPlaylistId';
+import getPlaylistName from '../../utils/getPlaylistName';
 
 export default function PlaylistDetailsView({ route }) {
 
   const dispatch = useDispatch();
   const { getCurrentPlaylist, getCurrentPlaylistDetails } = useAppAccessor();
   const currentPlaylistDetails = getCurrentPlaylistDetails();
-  const { title, ti, playlist_id, id } = getCurrentPlaylist();
+  const currentPlaylist = getCurrentPlaylist();
+  const name = getPlaylistName(currentPlaylist);
 
   const { loading, playlistDetail } = currentPlaylistDetails;
   const tracks = playlistDetail?.tracks ?? [];
 
   useEffect(() => {
-    const { type } = route.params; 
+    const type = route.params?.type; 
     if (type && type === 'my-work') {
 
       dispatch(fetchFavoritePlaylistDetails(playlist_id));
     } else {
-      
-      dispatch(fetchPlaylistDetails(playlist_id ?? id));
+
+      dispatch(fetchPlaylistDetails(getPlaylistId(currentPlaylist)));
     }
   }, [])
 
   return(
     <View style={styles.container}>
-      <Header title={title ?? ti} />
+      <Header title={name} />
      
       <View style={{ flex: 1}}>
         {
