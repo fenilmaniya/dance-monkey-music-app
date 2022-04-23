@@ -23,6 +23,7 @@ export default function App() {
 
     TrackPlayer.updateOptions({
       stopWithApp: true,
+      alwaysPauseOnInterruption: true,
       // Media controls capabilities
       capabilities: [
           Capability.Play,

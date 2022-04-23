@@ -24,7 +24,7 @@ export default function PlaylistDetailsView({ route }) {
     const type = route.params?.type; 
     if (type && type === 'my-work') {
 
-      dispatch(fetchFavoritePlaylistDetails(playlist_id));
+      dispatch(fetchFavoritePlaylistDetails(getPlaylistId(currentPlaylist)));
     } else {
 
       dispatch(fetchPlaylistDetails(getPlaylistId(currentPlaylist)));
