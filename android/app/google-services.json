@@ -7,12 +7,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:687792173940:android:1204aa823c2c4aaf4ff221",
+        "mobilesdk_app_id": "1:687792173940:android:a81531b90ed34ce14ff221",
         "android_client_info": {
           "package_name": "com.dancemonkey"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "687792173940-k5vims71igt7fq3mbiski10pkbjsncnf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dancemonkey",
+            "certificate_hash": "9abdaacd821b2d00c5befdbece428e2ffd2296a9"
+          }
+        },
+        {
+          "client_id": "687792173940-qer71lu0ld4s14oj6bopqs13llar7laf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dancemonkey",
+            "certificate_hash": "7883901379112ab667ba477352d30957682c51e7"
+          }
+        },
         {
           "client_id": "687792173940-if5m8hnel0ug9jclkj00s6el4ubs04eb.apps.googleusercontent.com",
           "client_type": 3
