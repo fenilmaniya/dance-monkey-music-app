@@ -24,10 +24,10 @@ export default function PlayerController({ mini = false }) {
     if (event.type === Event.PlaybackState) {
       setPlayerState(event.state);
     }
-    if (event.type === Event.PlaybackQueueEnded) {
+    /*if (event.type === Event.PlaybackQueueEnded) {
       
       dispatch(skipToNext());
-    }
+    }*/
   });
 
 
