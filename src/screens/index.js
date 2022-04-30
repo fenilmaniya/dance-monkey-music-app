@@ -8,3 +8,4 @@ export { default as AlbumDetailsView } from './AlbumDetailsView';
 export { default as ArtistDetailsView } from './ArtistDetailsView';
 export { default as MyWorkView } from './MyWorkView';
 export { default as CreatePlaylist } from './CreatePlaylist';
+
