@@ -245,3 +245,4 @@ export const skipToNext = () => {
     dispatch(fetchCurrentTrackURL(playerQueue[nextIndex]));
   }
 }
+
