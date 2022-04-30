@@ -27,6 +27,32 @@ const styles = StyleSheet.create({
   buttonContainer: {
     padding: 10,
   },
+
+  // mini player
+  miniPlayerImage: {
+    height: 50,
+    width: 50,
+    borderRadius: 4,
+  },
+  miniPlayerTextContainer: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  miniPlayerItemTitle: {
+    color: colors.white,
+    fontWeight: 'bold',
+  },
+  miniPlayerItemSubTitle: {
+    color: colors.white,
+  },
+  miniPlayerContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    margin: 10, 
+    backgroundColor: '#1A1A1A',
+    borderRadius: 10,
+  }
 });
 
 export default styles;

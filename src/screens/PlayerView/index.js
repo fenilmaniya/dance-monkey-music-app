@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, View, Text, TouchableOpacity } from 'react-native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
-import { ProgressSlider, PlayerController, Header } from '../../components';
+import { ProgressSlider, PlayerController, Header, PlaylistSelector } from '../../components';
 import Icon from '../../lib/Icons';
 import styles from './styles';
 import { useAppAccessor } from '../../hooks';
@@ -10,23 +11,27 @@ import { fetchCurrentTrackURL, generatePlayList, addToFavorite } from './playerV
 
 export default function PlayerView() {
 
+  const [playlistSelector, setPlaylistSelector] = useState(false);
+
   const dispatch = useDispatch();
-  const { getCurrentTrack, getPlayerQueue } = useAppAccessor();
+  const navigation = useNavigation();
+  const focused = useIsFocused();
+  const { getApp, getCurrentTrack, getPlayerQueue } = useAppAccessor();
   const currentPlayTrack = getCurrentTrack();
   const playerQueue = getPlayerQueue();
-  const { artwork_large, artwork_medium, track_title, secondary_language, duration } = currentPlayTrack;
+  const { artwork_large, artwork_medium, aw, track_title, ti, secondary_language, language, duration, dr, isFavorite = false } = currentPlayTrack;
 
   useEffect(() => {
     dispatch(fetchCurrentTrackURL(currentPlayTrack));
     dispatch(generatePlayList(playerQueue, currentPlayTrack));
-  }, []);
+  }, [focused]);
 
   return (
     <View style={styles.container}>
       <Header title={track_title} />
       <View style={{ flex: 1}}>
         <Image 
-          source={{ uri: convertToSSL(artwork_large ?? artwork_medium)}}
+          source={{ uri: convertToSSL(artwork_large ?? artwork_medium ?? aw ?? '')}}
           style={styles.mainImage}
           resizeMethod={'resize'}
           resizeMode={'contain'}
@@ -37,14 +42,15 @@ export default function PlayerView() {
         <View style={{ flexDirection: 'row', alignItems: 'center'}}>
           <View style={styles.textContainer}>
             <Text 
+              testID={'player-track-title'}
               numberOfLines={1}
               style={styles.itemTitle}>
-              {track_title}
+              {track_title ?? ti ?? ''}
             </Text>
             <Text 
               numberOfLines={1}
               style={styles.itemSubTitle}>
-              {secondary_language}
+              {secondary_language ?? language ?? ''}
             </Text>
           </View>
 
@@ -53,14 +59,37 @@ export default function PlayerView() {
             <Icon name="download" fill="#fff" height="20" width="20" />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => addToFavorite(currentPlayTrack)}
+            style={styles.buttonContainer}
+            onPress={() => navigation.navigate('song-queue')}
+          >  
+            <Icon name="song_queue" fill="#fff" height="22" width="22" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => {
+              setPlaylistSelector(true);
+            }}
+          >  
+            <Icon name="add_playlist" fill="#fff" height="20" width="20" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => dispatch(addToFavorite(currentPlayTrack, isFavorite))}
             style={styles.buttonContainer}>  
-            <Icon name="heart_inline" fill="#fff" height="20" width="20" />
+            <Icon name={isFavorite ? 'heart' : 'heart_inline'} fill="#fff" height="20" width="20" />
           </TouchableOpacity>
         </View>
-        <ProgressSlider {...{duration}} />
+        <ProgressSlider {...{duration, dr}} />
         <PlayerController />
       </View>
+
+      <PlaylistSelector
+        visible={playlistSelector}
+        track={currentPlayTrack}
+        onClose={() => {
+          setPlaylistSelector(false);
+        }}
+      />
     </View>
   )
 }
+

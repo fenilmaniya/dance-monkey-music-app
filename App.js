@@ -19,9 +19,11 @@ export default function App() {
 
   useEffect(() => {
 
-    TrackPlayer.setupPlayer({});
+    TrackPlayer.setupPlayer();
 
     TrackPlayer.updateOptions({
+      stopWithApp: true,
+      alwaysPauseOnInterruption: true,
       // Media controls capabilities
       capabilities: [
           Capability.Play,

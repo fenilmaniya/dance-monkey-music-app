@@ -9,8 +9,7 @@ import { setCurrentPlaylist } from './SRPATab.actions';
 import { NoResultFound } from '../../components';
 
 export default function PlayList() {
-
-
+  
   const { getHome } = useAppAccessor();
   const {
     loading,
@@ -20,9 +19,10 @@ export default function PlayList() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity
+        testID={`playlist-${index}`}
         onPress={() => {
           dispatch(setCurrentPlaylist(item))
             .then(() => {
@@ -31,19 +31,19 @@ export default function PlayList() {
         }}
         style={styles.itemContainer}>
         <Image 
-          source={{uri: convertToSSL(item.artwork)}}
+          source={{uri: convertToSSL(item.artwork ?? item.aw ?? '')}}
           style={styles.itemImage}
         />
         <View style={styles.textContainer}>
           <Text 
             numberOfLines={1}
             style={styles.itemTitle}>
-            {item.title}
+            {item.title ?? item.ti ?? ''}
           </Text>
           <Text 
             numberOfLines={1}
             style={styles.itemSubTitle}>
-            {item.title}
+            {item.title ?? item.ti ?? ''}
           </Text>
         </View>
       </TouchableOpacity>
@@ -57,7 +57,8 @@ export default function PlayList() {
         data={playlist}
         style={{ backgroundColor: colors.black, }}
         renderItem={renderItem}
-        keyExtractor={(item, index) => `playlist-${item.playlist_id}`}
+        testID={'play-list'}
+        keyExtractor={(item, index) => `playlist-${item.playlist_id ?? item.id}`}
       />
     </>
   )

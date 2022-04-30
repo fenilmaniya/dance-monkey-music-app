@@ -1,9 +1,13 @@
 import { urls } from '../../constants';
-import { apiGet } from '../../dao';
+import { apiGet, apiPost } from '../../dao';
+import { encodeParamsForUrl } from '../../utils/url';
 import {
   SEARCH_QUERY_REQUEST,
   SEARCH_QUERY_RESPONSE,
-  SEARCH_QUERY_ERROR
+  SEARCH_QUERY_ERROR,
+  FETCH_DASHBOARD_REQUEST,
+  FETCH_DASHBOARD_ERROR,
+  FETCH_DASHBOARD_RESPONSE,
 } from './HomeView.actionTypes';
 
 const search_type = [
@@ -26,34 +30,118 @@ export const searchWithQuery = (query) => {
     const state = getState();
     const app = state.app;
 
-    const searchArray = [];
+    await apiGet({
+      base: 'https://gsearch-prod-cloud.gaana.com/',
+      app,
+      route: `${urls.auto_suggest}${query}`
+    })
+    .then(res => {
+      if (res) {
+        res.gr.map(item => {
 
-    for (const type of search_type) {
-      
-      const searchItem = await apiGet({
-        app,
-        route: `${urls[`search_${type}`]}${query.trim()}`
-      })
-      .then(res => {
-        if (res) {
-          console.log(type, res?.[type].length)
+          let type = item.ty.toLowerCase();
+
+          if (type === 'track') {
+            type += 's';
+          }
+
           dispatch({
             type: SEARCH_QUERY_RESPONSE,
             payload : {
-              [type]: res?.[type] ?? [],
+              [type]: item?.gd ?? [],
             }
           });
-        }
-      })
-      .catch(err => {
-        dispatch({
-          type: SEARCH_QUERY_ERROR
         });
+      }
+    })
+    .catch(async err => {
+      console.log(err);
+
+      const searchArray = [];
+
+      for (const type of search_type) {
+        
+        const searchItem = await apiGet({
+          app,
+          route: `${urls[`search_${type}`]}${query.trim()}`,
+        })
+        .then(res => {
+          if (res) {
+            console.log(type, res?.[type].length)
+            dispatch({
+              type: SEARCH_QUERY_RESPONSE,
+              payload : {
+                [type]: res?.[type] ?? [],
+              }
+            });
+          }
+        })
+        .catch(err => {
+          dispatch({
+            type: SEARCH_QUERY_ERROR
+          });
+        });
+
+        searchArray.push(searchItem);
+      }
+
+      return Promise.all(searchArray);
+    });
+  }
+}
+
+export const fetchDashboardData = () => {
+  return async dispatch => {
+    dispatch({
+      type: FETCH_DASHBOARD_REQUEST,
+    });
+
+    try {
+      
+      const promiseArray = [];
+      for (const smartFeedUrl of urls.smart_feeds) {
+
+        const params = {
+          apiPath: smartFeedUrl.url,
+          index: Math.floor(Math.random() * 10),
+          type: 'homeSec'
+        }
+
+        promiseArray.push(
+          await apiPost({
+            isOld: false,
+            route: `apiv2?${encodeParamsForUrl(params)}`
+          })
+          .then(res => {
+            
+            if (res && res?.entities && res?.entities.length > 0) {
+              return {
+                ...res,
+                type: res?.entities[0].entity_type
+              };
+            }
+
+            return res;
+          })
+        );
+
+        await Promise.all(promiseArray)
+          .then(data => {
+            dispatch({
+              type: FETCH_DASHBOARD_RESPONSE,
+              payload : {
+                smart_feeds: data,
+              }
+            });
+          });
+      }
+
+    } catch(err) {
+      console.log(err);
+
+      dispatch({
+        type: FETCH_DASHBOARD_ERROR,
       });
-
-      searchArray.push(searchItem);
     }
-
-    return Promise.all(searchArray);
   }
 }

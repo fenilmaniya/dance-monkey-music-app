@@ -1,7 +1,11 @@
+import { Q } from '@nozbe/watermelondb';
 import { appBaseUrlsRef, appSecretsRef } from '../../dao/dao.helper';
 import {
-  SET_APP_SECRET
+  SET_APP_SECRET,
+  SET_APP_FAVORITE_TRACKS,
 } from '../../application/app.actionTypes';
+import db from '../../db';
+import getTrackId from '../../utils/getTrackId';
 
 export const fetchConstants = () => {
   return dispatch => {
@@ -37,5 +41,22 @@ export const fetchConstants = () => {
       .catch(err => {
         console.log(err);
       });
+  }
+}
+
+export const fetchFavorites = () => {
+  
+  return async dispatch => {
+    const favoritePlaylistCollection = db.collections.get('f_playlists');
+    const favoritePlaylist = await favoritePlaylistCollection.query(Q.where('playlist_id', 'favorites')).fetch();
+  
+    if (favoritePlaylist && favoritePlaylist.length > 0) {
+  
+      const tracks = favoritePlaylist[0].tracks;
+      dispatch({
+        type: SET_APP_FAVORITE_TRACKS,
+        payload: tracks.map(track => getTrackId(track))
+      });
+    }
   }
 }

@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { colors } from '../../constants';
-import { fetchConstants } from './loadingView.actions';
+import { fetchConstants, fetchFavorites } from './loadingView.actions';
 
 export default function LoadingView() {
 
@@ -10,6 +9,7 @@ export default function LoadingView() {
 
   useEffect(() => {
     dispatch(fetchConstants());
+    dispatch(fetchFavorites());
   }, [])
 
   return (

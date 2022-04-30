@@ -4,15 +4,22 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from '../lib/Icons';
 import { colors } from '../constants';
 
-export default function Header({ title }) {
+export default function Header({ title, onBackPress, right, onRightPress }) {
 
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
+        testID={'back-button'}
         onPress={() => {
-          navigation.goBack();
+          if (onBackPress) {
+            
+            onBackPress();
+          } else {
+
+            navigation.goBack();
+          }
         }}
         style={styles.iconContainer}
       >
@@ -22,6 +29,18 @@ export default function Header({ title }) {
         style={styles.title}
         numberOfLines={1}
       >{title}</Text>
+      {
+        right && 
+          <TouchableOpacity
+            onPress={() => {
+              if (onRightPress) {
+                onRightPress();
+              }
+            }}
+          >
+            {right}
+          </TouchableOpacity>
+      }
     </View>
   )
 }

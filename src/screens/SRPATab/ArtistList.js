@@ -19,9 +19,10 @@ export default function TrackList() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <TouchableOpacity
+        testID={`artist-${index}`}
         onPress={() => {
           dispatch(setCurrentArtist(item))
             .then(() => {
@@ -30,19 +31,19 @@ export default function TrackList() {
         }}
         style={styles.itemContainer}>
         <Image 
-          source={{uri: convertToSSL(item.atw)}}
+          source={{uri: convertToSSL(item.atw ?? item.aw ?? '')}}
           style={styles.itemImage}
         />
         <View style={styles.textContainer}>
           <Text 
             numberOfLines={1}
             style={styles.itemTitle}>
-            {item.name}
+            {item.name ?? item.ti ?? ''}
           </Text>
           <Text 
             numberOfLines={1}
             style={styles.itemSubTitle}>
-            {item.name}
+            {item.name ?? item.ti ?? ''}
           </Text>
         </View>
       </TouchableOpacity>
@@ -56,7 +57,8 @@ export default function TrackList() {
         data={artist}
         style={{ backgroundColor: colors.black, }}
         renderItem={renderItem}
-        keyExtractor={(item, index) => `artist-${item.artist_id}`}
+        testID={'artist-list'}
+        keyExtractor={(item, index) => `artist-${item.artist_id ?? item.id}`}
       />
     </>
   )
