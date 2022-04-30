@@ -783,7 +783,7 @@ PODS:
     - React-Core
   - SocketRocket (0.6.0)
   - SwiftAudioEx (0.14.7)
-  - WatermelonDB (0.24.0):
+  - WatermelonDB (0.20.0):
     - React
     - React-jsi
   - Yoga (1.14.0)
@@ -1033,7 +1033,7 @@ SPEC CHECKSUMS:
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SwiftAudioEx: 3a4024e48f3b3e45dac6bf2668d7adbe7b83f50e
-  WatermelonDB: 9ba0c9f6706f660807823617396ae59f3911268d
+  WatermelonDB: ef3ddc1b9c616f876b23ae51fdc1982e209419c1
   Yoga: 6671cf077f614314c22fd09ddf87d7abeee64e96
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
