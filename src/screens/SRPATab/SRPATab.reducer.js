@@ -18,7 +18,6 @@ export default function SRPATabReducer(state = initialState, action) {
       return {
         ...state,
         currentPlayTrack: {
-          ...state.currentPlayTrack,
           ...action.payload
         }
       }

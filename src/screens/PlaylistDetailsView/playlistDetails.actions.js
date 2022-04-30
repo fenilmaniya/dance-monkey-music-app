@@ -37,7 +37,7 @@ export function fetchPlaylistDetails(playlist_id) {
   }
 }
 
-export function fetchFavoritePlaylistDetails() {
+export function fetchFavoritePlaylistDetails(playlistID) {
   return async dispatch => {
 
     dispatch({
@@ -45,7 +45,7 @@ export function fetchFavoritePlaylistDetails() {
     })
 
     const favoritePlaylistCollection = db.collections.get('f_playlists');
-    const favoritePlaylist = await favoritePlaylistCollection.query(Q.where('playlist_id', 'favorites')).fetch();
+    const favoritePlaylist = await favoritePlaylistCollection.query(Q.where('playlist_id', playlistID)).fetch();
     const playlist = favoritePlaylist[0];
 
     dispatch({

@@ -5,7 +5,7 @@ import Slider from 'react-native-slider';
 
 const ScreenWidth = Dimensions.get('window').width;
 
-function ProgressSlider({ duration }) {
+function ProgressSlider({ duration, dr }) {
 
 	const progress = useProgress();
 
@@ -13,7 +13,7 @@ function ProgressSlider({ duration }) {
 		<View>
 			<Slider
 				value={progress.position}
-				maximumValue={duration}
+				maximumValue={duration ?? dr}
 				style={styles.sliderStyle}
 				minimumTrackTintColor={'white'}
 				maximumTrackTintColor={`rgba(255, 255, 255, 0.3)`}

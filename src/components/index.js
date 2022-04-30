@@ -4,3 +4,6 @@ export { default as TrackList } from './TrackList';
 export { default as PlayerController } from './PlayerController';
 export { default as Header } from './Header';
 export { default as NoResultFound } from './NoResultFound';
+export { default as FabButton } from './FabButton';
+export { default as MyPlaylist } from './MyPlaylist';
+export { default as PlaylistSelector } from './PlaylistSelector';

@@ -22,5 +22,10 @@ module.exports = async function() {
 
   TrackPlayer.addEventListener('remote-previous', () => {
     store.dispatch(skipToPrevious());
-  })
+  });
+
+  
+	TrackPlayer.addEventListener('playback-queue-ended', ({ position }) => {
+    store.dispatch(skipToNext());
+  });
 }
