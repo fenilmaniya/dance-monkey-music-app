@@ -5,8 +5,8 @@ const {
 } = require('detox/runners/jest-circus');
 
 class CustomDetoxEnvironment extends DetoxCircusEnvironment {
-  constructor(config, context) {
-    super(config, context);
+  constructor(config) {
+    super(config);
 
     // Can be safely removed, if you are content with the default value (=300000ms)
     this.initTimeout = 300000;

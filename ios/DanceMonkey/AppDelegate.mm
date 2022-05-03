@@ -4,9 +4,28 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
-#import <React/RCTAppSetupUtils.h>
+// #import <React/RCTAppSetupUtils.h>
 
 #import <Firebase.h>
+
+#ifdef FB_SONARKIT_ENABLED
+#import <FlipperKit/FlipperClient.h>
+#import <FlipperKitLayoutPlugin/FlipperKitLayoutPlugin.h>
+#import <FlipperKitUserDefaultsPlugin/FKUserDefaultsPlugin.h>
+#import <FlipperKitNetworkPlugin/FlipperKitNetworkPlugin.h>
+#import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
+#import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
+
+static void InitializeFlipper(UIApplication *application) {
+  FlipperClient *client = [FlipperClient sharedClient];
+  SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
+  [client addPlugin:[[FlipperKitLayoutPlugin alloc] initWithRootNode:application withDescriptorMapper:layoutDescriptorMapper]];
+  [client addPlugin:[[FKUserDefaultsPlugin alloc] initWithSuiteName:nil]];
+  [client addPlugin:[FlipperKitReactPlugin new]];
+  [client addPlugin:[[FlipperKitNetworkPlugin alloc] initWithNetworkAdapter:[SKIOSNetworkAdapter new]]];
+  [client start];
+}
+#endif
 
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
@@ -32,23 +51,30 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  RCTAppSetupPrepareApp(application);
+  // RCTAppSetupPrepareApp(application);
   
   if ([FIRApp defaultApp] == nil) {
     [FIRApp configure];
   }
 
+  #ifdef FB_SONARKIT_ENABLED
+    InitializeFlipper(application);
+  #endif
+
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
 
-#if RCT_NEW_ARCH_ENABLED
-  _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
-  _reactNativeConfig = std::make_shared<facebook::react::EmptyReactNativeConfig const>();
-  _contextContainer->insert("ReactNativeConfig", _reactNativeConfig);
-  _bridgeAdapter = [[RCTSurfacePresenterBridgeAdapter alloc] initWithBridge:bridge contextContainer:_contextContainer];
-  bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
-#endif
+// #if RCT_NEW_ARCH_ENABLED
+//   _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
+//   _reactNativeConfig = std::make_shared<facebook::react::EmptyReactNativeConfig const>();
+//   _contextContainer->insert("ReactNativeConfig", _reactNativeConfig);
+//   _bridgeAdapter = [[RCTSurfacePresenterBridgeAdapter alloc] initWithBridge:bridge contextContainer:_contextContainer];
+//   bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
+// #endif
 
-  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"DanceMonkey", nil);
+  // UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"DanceMonkey", nil);
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+                                                   moduleName:@"DanceMonkey"
+                                            initialProperties:nil];
 
   if (@available(iOS 13.0, *)) {
     rootView.backgroundColor = [UIColor systemBackgroundColor];
@@ -67,49 +93,49 @@
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
 #if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
 
-#if RCT_NEW_ARCH_ENABLED
+// #if RCT_NEW_ARCH_ENABLED
 
-#pragma mark - RCTCxxBridgeDelegate
+// #pragma mark - RCTCxxBridgeDelegate
 
-- (std::unique_ptr<facebook::react::JSExecutorFactory>)jsExecutorFactoryForBridge:(RCTBridge *)bridge
-{
-  _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
-                                                             delegate:self
-                                                            jsInvoker:bridge.jsCallInvoker];
-  return RCTAppSetupDefaultJsExecutorFactory(bridge, _turboModuleManager);
-}
+// - (std::unique_ptr<facebook::react::JSExecutorFactory>)jsExecutorFactoryForBridge:(RCTBridge *)bridge
+// {
+//   _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
+//                                                              delegate:self
+//                                                             jsInvoker:bridge.jsCallInvoker];
+//   return RCTAppSetupDefaultJsExecutorFactory(bridge, _turboModuleManager);
+// }
 
-#pragma mark RCTTurboModuleManagerDelegate
+// #pragma mark RCTTurboModuleManagerDelegate
 
-- (Class)getModuleClassFromName:(const char *)name
-{
-  return RCTCoreModulesClassProvider(name);
-}
+// - (Class)getModuleClassFromName:(const char *)name
+// {
+//   return RCTCoreModulesClassProvider(name);
+// }
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
-                                                      jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker
-{
-  return nullptr;
-}
+// - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
+//                                                       jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker
+// {
+//   return nullptr;
+// }
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
-                                                     initParams:
-                                                         (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-  return nullptr;
-}
+// - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
+//                                                      initParams:
+//                                                          (const facebook::react::ObjCTurboModule::InitParams &)params
+// {
+//   return nullptr;
+// }
 
-- (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass
-{
-  return RCTAppSetupDefaultModuleFromClass(moduleClass);
-}
+// - (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass
+// {
+//   return RCTAppSetupDefaultModuleFromClass(moduleClass);
+// }
 
-#endif
+// #endif
 
 @end

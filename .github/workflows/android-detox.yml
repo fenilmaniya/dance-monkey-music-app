@@ -23,6 +23,13 @@ jobs:
       with:
         fetch-depth: 1
 
+    - name: set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: gradle
+
     - name: Generate Detox app cache key
       run: echo $(git rev-parse HEAD:app) > "./app-git-revision.txt"
 
@@ -33,7 +40,7 @@ jobs:
         path: |
           android/app/build/outputs/apk/e2ePlay/release
           android/app/build/outputs/apk/androidTest/e2ePlay/release
-        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('package-lock.json') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Node
       if: steps.detoxappcache.outputs.cache-hit != 'true'
@@ -47,15 +54,15 @@ jobs:
       id: npmcache
       with:
         path: node_modules
-        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
     - name: Rebuild detox
       if: steps.detoxappcache.outputs.cache-hit != 'true' && steps.npmcache.outputs.cache-hit == 'true'
-      run: yarn detox clean-framework-cache && yarn detox build-framework-cache
+      run: npm detox clean-framework-cache && npm detox build-framework-cache
 
     - name: Install Dependencies
       if: steps.detoxappcache.outputs.cache-hit != 'true' && steps.npmcache.outputs.cache-hit != 'true'
-      run: yarn install
+      run: npm install
 
     - name: Gradle config
       working-directory: android
@@ -67,7 +74,7 @@ jobs:
         echo -e "android.enableJetifier=true" >> ./gradle.properties
         echo -e "FLIPPER_VERSION=0.51.0" >> ./gradle.properties
         echo -e "VERSIONCODE=900" >> ./gradle.properties
-        echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+        echo -e "APPLICATION_ID=chat.dancemonkey" >> ./gradle.properties
         echo -e "BugsnagAPIKey=\"\"" >> ./gradle.properties
         echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
         echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
@@ -80,7 +87,7 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
         cache: 'gradle'
-    - run: ./gradlew app:assembleE2ePlayRelease app:assembleE2ePlayReleaseAndroidTest -DtestBuildType=release
+    - run: ./gradlew app:assembleRelease app:assembleReleaseAndroidTest -DtestBuildType=release
       if: steps.detoxappcache.outputs.cache-hit != 'true'
       working-directory: android
 
@@ -135,7 +142,7 @@ jobs:
         path: |
           android/app/build/outputs/apk/e2ePlay/release
           android/app/build/outputs/apk/androidTest/e2ePlay/release
-        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('yarn.lock') }}-${{ hashFiles('./app-git-revision.txt') }}
+        key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('package-lock.json') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
       if: ${{ steps.detoxappcache.outputs.cache-hit != 'true' && steps.last_run_status.outputs.last_run_status != 'success' }}
@@ -153,11 +160,11 @@ jobs:
       id: npmcache
       with:
         path: node_modules
-        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+        key: node-modules-${{ hashFiles('**/package-lock.json') }}
 
     - name: Install Dependencies
       if: ${{ steps.npmcache.outputs.cache-hit != 'true' && steps.last_run_status.outputs.last_run_status != 'success' }}
-      run: yarn install
+      run: npm install
 
     - name: Run tests
       uses: ReactiveCircus/android-emulator-runner@v2.19.1
@@ -171,7 +178,7 @@ jobs:
         avd-name: Pixel_API_28_AOSP
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: yarn detox test e2e/tests/${{ matrix.folder }} --configuration and.emu.release || yarn detox test e2e/tests/${{ matrix.folder }} --configuration and.emu.release
+        script: npm detox test e2e/tests/${{ matrix.folder }} --configuration android.emu.release || npm detox test e2e/tests/${{ matrix.folder }} --configuration android.emu.release
 
     - name: Save run status
       if: steps.last_run_status.outputs.last_run_status != 'success'

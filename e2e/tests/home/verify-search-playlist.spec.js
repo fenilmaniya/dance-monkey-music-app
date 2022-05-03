@@ -1,12 +1,15 @@
 const { validateNextPrevious } = require("../../helpers/TrackHelper");
 
-describe('Example', () => {
+describe('Verify Playlist Search', () => {
 
   before(async () => {
     await device.launchApp();
   });
 
   beforeEach(async () => {
+    await device.reloadReactNative();
+    await waitFor(element(by.id('search-bar-view'))).toBeVisible().withTimeout(5000);
+    await element(by.id('search-bar-view')).tap();
     await element(by.id('search-bar')).clearText();
     await element(by.id('search-bar')).typeText('arijit singh');
   });
@@ -16,14 +19,12 @@ describe('Example', () => {
     await element(by.id('playlists-tab')).tap();
     
     await expect(element(by.id('play-list'))).toBeVisible();
-    await waitFor(element(by.id('play-list'))).toBeVisible()
-        .whileElement(by.id('playlist-0'))
-        .tap();
+    await waitFor(element(by.id('play-list'))).toBeVisible().withTimeout(2000);
+    await element(by.id('playlist-0')).tap();
 
     await expect(element(by.id('track-list'))).toBeVisible();
-    await waitFor(element(by.id('track-list'))).toBeVisible()
-        .whileElement(by.id('track-0'))
-        .tap();
+    await waitFor(element(by.id('track-list'))).toBeVisible().withTimeout(2000);
+    await element(by.id('track-0')).tap();
         
     await validateNextPrevious();
 

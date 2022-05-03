@@ -9,7 +9,6 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.config.ReactFeatureFlags;
 import com.facebook.soloader.SoLoader;
-import com.dancemonkey.newarchitecture.MainApplicationReactNativeHost;
 import com.nozbe.watermelondb.WatermelonDBPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -39,16 +38,9 @@ public class MainApplication extends Application implements ReactApplication {
         }
       };
 
-  private final ReactNativeHost mNewArchitectureNativeHost =
-      new MainApplicationReactNativeHost(this);
-
   @Override
   public ReactNativeHost getReactNativeHost() {
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-      return mNewArchitectureNativeHost;
-    } else {
       return mReactNativeHost;
-    }
   }
 
   @Override

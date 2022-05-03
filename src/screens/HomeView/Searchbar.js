@@ -19,6 +19,7 @@ export default function Searchbar({ disabled }) {
   if (disabled) {
     return (
       <TouchableOpacity
+        testID='search-bar-view'
         style={{ ...styles.textInput, marginLeft: 10,}}
         onPress={() => navigation.navigate('search')}
       >

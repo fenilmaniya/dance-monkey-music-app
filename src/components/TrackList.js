@@ -24,6 +24,7 @@ export default function TrackList({ tracks, fromSearch, horizontal, type }) {
       <TouchableOpacity
         testID={`track-${index}`}
         onPress={() => {
+          console.log('click', `track-${index}`);
           if (!fromSearch) {
             dispatch({
               type: ADD_TO_PLAYER_QEUEUE,
