@@ -178,7 +178,7 @@ jobs:
         avd-name: pixel_4_xl_api_30
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
-        script: npm detox test e2e/tests/${{ matrix.folder }} --configuration android.emu.release || npm detox test e2e/tests/${{ matrix.folder }} --configuration android.emu.release
+        script: npm run e2e:android-release
 
     - name: Save run status
       if: steps.last_run_status.outputs.last_run_status != 'success'
