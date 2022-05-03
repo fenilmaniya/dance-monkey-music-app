@@ -8,7 +8,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        api-level: [30]
+        api-level: [21, 23, 29]
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -38,12 +38,8 @@ jobs:
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
+          api-level: ${{ matrix.api-level }}
           force-avd-creation: false
-          api-level: 30
-          arch: x86_64
-          profile: pixel
-          ram-size: 2048M
-          avd-name: pixel_4_xl_api_30
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: ./gradlew connectedCheck
