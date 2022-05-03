@@ -171,11 +171,11 @@ jobs:
       if: steps.last_run_status.outputs.last_run_status != 'success'
       id: testrun
       with:
-        api-level: 28
+        api-level: 30
         arch: x86_64
         profile: pixel
         ram-size: 2048M
-        avd-name: Pixel_API_28_AOSP
+        avd-name: pixel_4_xl_api_30
         emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
         disable-animations: true
         script: npm detox test e2e/tests/${{ matrix.folder }} --configuration android.emu.release || npm detox test e2e/tests/${{ matrix.folder }} --configuration android.emu.release
