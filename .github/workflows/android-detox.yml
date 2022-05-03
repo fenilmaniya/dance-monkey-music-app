@@ -140,8 +140,8 @@ jobs:
       if: steps.last_run_status.outputs.last_run_status != 'success'
       with:
         path: |
-          android/app/build/outputs/apk/e2ePlay/release
-          android/app/build/outputs/apk/androidTest/e2ePlay/release
+          android/app/build/outputs/apk/release
+          android/app/build/outputs/apk/androidTest/release
         key: AndroidDetoxReleaseAndTest-v4-${{ hashFiles('package-lock.json') }}-${{ hashFiles('./app-git-revision.txt') }}
 
     - name: Check for Detox app
