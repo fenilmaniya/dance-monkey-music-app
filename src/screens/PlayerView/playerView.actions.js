@@ -39,10 +39,10 @@ export const fetchCurrentTrackURL = (track) => {
     if (isNumber(trackIndex)) {
       
       let trackObj = await TrackPlayer.getTrack(trackIndex);
-      if (track && trackObj.track_id === (track?.track_id ?? track.iid)) return;
+      if (track && getTrackId(trackObj) === getTrackId(track)) return;
     }
 
-    if (track.iid || track.entity_id) {
+    if (getTrackId(track)) {
 
       const res = await apiPost({
         app,
@@ -95,7 +95,7 @@ export const fetchCurrentTrackURL = (track) => {
         }
       });
 
-      await TrackPlayer.destroy()
+      await TrackPlayer.stop()
       
       await TrackPlayer.add([
         {
@@ -109,6 +109,10 @@ export const fetchCurrentTrackURL = (track) => {
         }
       ]);
 
+      if ((await TrackPlayer.getQueue()).length > 0) {
+        await TrackPlayer.skipToNext();
+      }
+      
       await TrackPlayer.play();
     });
   }
@@ -217,11 +221,11 @@ export const skipToPrevious = () => {
     const state = getState();
     const playerQueue = state.player.playerQueue;
     const currentTrack = state.SRPA.currentPlayTrack;
-    const currentTrackId = currentTrack.track_id ?? currentTrack.iid ?? currentTrack.entity_id;
+    const currentTrackId = getTrackId(currentTrack);
 
     if (!playerQueue || playerQueue.length === 0) return;
 
-    const currentTrackIndex = playerQueue.findIndex(track => (track.track_id ?? track.iid ?? track.entity_id) === currentTrackId);
+    const currentTrackIndex = playerQueue.findIndex(track => getTrackId(track) === currentTrackId);
     if (!isNumber(currentTrackIndex)) return;
 
     const nextIndex = currentTrackIndex === 0 ? playerQueue.length - 1 : currentTrackIndex - 1;
@@ -234,11 +238,11 @@ export const skipToNext = () => {
     const state = getState();
     const playerQueue = state.player.playerQueue;
     const currentTrack = state.SRPA.currentPlayTrack;
-    const currentTrackId = currentTrack.track_id ?? currentTrack.iid ?? currentTrack.entity_id;
+    const currentTrackId = getTrackId(currentTrack);
 
     if (!playerQueue || playerQueue.length === 0) return;
     
-    const currentTrackIndex = playerQueue.findIndex(track => (track.track_id ?? track.iid ?? track.entity_id) === currentTrackId);
+    const currentTrackIndex = playerQueue.findIndex(track => getTrackId(track) === currentTrackId);
     if (!isNumber(currentTrackIndex)) return;
 
     const nextIndex = currentTrackIndex === playerQueue.length - 1 ? 0 : currentTrackIndex + 1;
