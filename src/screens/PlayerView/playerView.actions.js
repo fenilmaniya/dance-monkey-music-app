@@ -1,4 +1,5 @@
 import TrackPlayer from 'react-native-track-player';
+import RNFetchBlob from 'rn-fetch-blob';
 import base64 from 'js-base64';
 import cryptoJs from "crypto-js";
 import { Q } from '@nozbe/watermelondb';
@@ -250,3 +251,21 @@ export const skipToNext = () => {
   }
 }
 
+export const downloadMP3 = (downloadURL, title) => {
+  let dirs = RNFetchBlob.fs.dirs
+  RNFetchBlob
+    .config({
+        // DCIMDir is in external storage
+        path : dirs.MusicDir + `/${title}.mp3`
+    })
+    .fetch('GET', downloadURL)
+    .then((res) => RNFetchBlob.fs.scanFile([ { path : res.path(), mime : 'audio/mpeg' } ]))
+    .then(() => {
+        // scan file success
+        console.log('song downloaded');
+      })
+      .catch((err) => {
+        // scan file error
+        console.log('error while download');
+    })
+}

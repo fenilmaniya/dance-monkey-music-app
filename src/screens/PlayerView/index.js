@@ -7,7 +7,7 @@ import Icon from '../../lib/Icons';
 import styles from './styles';
 import { useAppAccessor } from '../../hooks';
 import { convertToSSL } from '../../utils';
-import { fetchCurrentTrackURL, generatePlayList, addToFavorite } from './playerView.actions';
+import { fetchCurrentTrackURL, generatePlayList, addToFavorite, downloadMP3 } from './playerView.actions';
 
 export default function PlayerView() {
 
@@ -19,7 +19,7 @@ export default function PlayerView() {
   const { getApp, getCurrentTrack, getPlayerQueue } = useAppAccessor();
   const currentPlayTrack = getCurrentTrack();
   const playerQueue = getPlayerQueue();
-  const { artwork_large, artwork_medium, aw, track_title, ti, secondary_language, language, duration, dr, isFavorite = false } = currentPlayTrack;
+  const { artwork_large, artwork_medium, aw, track_title, ti, secondary_language, language, duration, dr, isFavorite = false, track_url } = currentPlayTrack;
 
   useEffect(() => {
     dispatch(fetchCurrentTrackURL(currentPlayTrack));
@@ -55,6 +55,7 @@ export default function PlayerView() {
           </View>
 
           <TouchableOpacity
+            onPress={() => downloadMP3(track_url, track_title ?? ti)}
             style={styles.buttonContainer}>  
             <Icon name="download" fill="#fff" height="20" width="20" />
           </TouchableOpacity>
