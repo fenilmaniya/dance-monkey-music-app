@@ -29,6 +29,10 @@ const useAppAccessor = () => {
   const getPlayerQueue = useSelector(state => {
     return state.player.playerQueue
   });
+  
+  const getPlayerState = useSelector(state => {
+    return state.player.playerState
+  });
 
   const getCurrentAlbum = useSelector(state => {
     return state.SRPA.currentAlbum
@@ -53,6 +57,7 @@ const useAppAccessor = () => {
     getCurrentPlaylist: () => getCurrentPlaylist,
     getCurrentPlaylistDetails: () => getCurrentPlaylistDetails,
     getPlayerQueue: () => getPlayerQueue,
+    getPlayerState: () => getPlayerState,
     getCurrentAlbum: () => getCurrentAlbum,
     getCurrentAlbumDetails: () => getCurrentAlbumDetails,
     getCurrentArtist: () => getCurrentArtist,

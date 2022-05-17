@@ -1,9 +1,11 @@
 import {
   ADD_TO_PLAYER_QEUEUE,
+  SET_PLAYER_STATE,
 } from './playerView.actionTypes';
 
 const initialState = {
-  playerQueue: []
+  playerQueue: [],
+  playerState: null
 }
 
 export default function playerViewReducer(state = initialState, action) {
@@ -13,6 +15,12 @@ export default function playerViewReducer(state = initialState, action) {
       return {
         ...state,
         playerQueue: action.payload
+      }
+
+    case SET_PLAYER_STATE:
+      return {
+        ...state,
+        ...action.payload
       }
 
     default:

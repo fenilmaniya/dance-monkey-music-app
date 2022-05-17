@@ -14,7 +14,7 @@ export default function Searchbar({ disabled }) {
 
   const _handleTextChange = _.debounce((value) => {
     dispatch(searchWithQuery(value))
-  }, 200);
+  }, 600);
 
   if (disabled) {
     return (

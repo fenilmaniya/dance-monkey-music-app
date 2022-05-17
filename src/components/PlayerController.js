@@ -1,36 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import TrackPlayer, { useTrackPlayerEvents, Event, State } from 'react-native-track-player';
+import TrackPlayer, {  State } from 'react-native-track-player';
 import { useDispatch } from 'react-redux';
+import { useAppAccessor } from '../hooks';
 import Icon from '../lib/Icons';
 import { skipToNext, skipToPrevious } from '../screens/PlayerView/playerView.actions';
 
-const events = [
-  Event.PlaybackError,
-  Event.PlaybackState,
-  Event.PlaybackQueueEnded
-];
-
 export default function PlayerController({ mini = false }) {
   const iconSize = mini ? 20 : 24;
-  const [playerState, setPlayerState] = useState(null);
-
-  const dispatch = useDispatch();
   
-  useTrackPlayerEvents(events, (event) => {
-    if (event.type === Event.PlaybackError) {
-      console.warn('An error occured while playing the current track.');
-    }
-    if (event.type === Event.PlaybackState) {
-      setPlayerState(event.state);
-    }
-    /*if (event.type === Event.PlaybackQueueEnded) {
-      
-      dispatch(skipToNext());
-    }*/
-  });
-
-
+  const dispatch = useDispatch();
+  const { getPlayerState } = useAppAccessor();
+  const playerState = getPlayerState();
+  
   const isPlaying = playerState === State.Playing;
 
   const handlePrevious = () => {

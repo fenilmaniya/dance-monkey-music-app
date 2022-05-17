@@ -12,7 +12,8 @@ import {
 } from '../SRPATab/SRPATab.actionTypes';
 import { isNumber } from 'lodash';
 import {
-  ADD_TO_PLAYER_QEUEUE
+  ADD_TO_PLAYER_QEUEUE,
+  SET_PLAYER_STATE
 } from './playerView.actionTypes';
 import db from '../../db';
 import { fetchFavorites } from '../LoadingView/loadingView.actions';
@@ -110,7 +111,7 @@ export const fetchCurrentTrackURL = (track) => {
         }
       ]);
 
-      if ((await TrackPlayer.getQueue()).length > 0) {
+      if ((await TrackPlayer.getQueue()).length > 1) {
         await TrackPlayer.skipToNext();
       }
       
@@ -268,4 +269,17 @@ export const downloadMP3 = (downloadURL, title) => {
         // scan file error
         console.log('error while download');
     })
+}
+
+export const setPlayerState = (playerState) => {
+
+  return dispatch => {
+
+    dispatch({
+      type: SET_PLAYER_STATE,
+      payload: {
+        playerState
+      }
+    })
+  }
 }

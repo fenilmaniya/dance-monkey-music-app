@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import TrackPlayer, { Capability } from 'react-native-track-player';
+import TrackPlayer, { Capability, useTrackPlayerEvents, Event, State } from 'react-native-track-player';
 import {
   SafeAreaView
 } from 'react-native';
@@ -14,6 +14,16 @@ import {
   PreviousButton,
   NotificationIcon,
 } from './src/constants/images';
+
+import {
+  setPlayerState
+} from './src/screens/PlayerView/playerView.actions';
+
+const events = [
+  Event.PlaybackError,
+  Event.PlaybackState,
+  Event.PlaybackQueueEnded
+];
 
 export default function App() {
 
@@ -41,8 +51,17 @@ export default function App() {
       previousIcon: NextButton,
       nextIcon: PreviousButton,
       icon: NotificationIcon,
-  });
+    });
   }, [])
+
+  useTrackPlayerEvents(events, (event) => {
+    if (event.type === Event.PlaybackError) {
+      console.warn('An error occured while playing the current track.');
+    }
+    if (event.type === Event.PlaybackState) {
+      store.dispatch(setPlayerState(event.state));
+    }
+  });
 
   return (
     <SafeAreaView style={{ flex: 1}}>
