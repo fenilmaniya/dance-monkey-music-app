@@ -96,8 +96,6 @@ export const fetchCurrentTrackURL = (track) => {
           track_url: base64.decode(d.data)
         }
       });
-
-      await TrackPlayer.stop()
       
       await TrackPlayer.add([
         {

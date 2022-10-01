@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import TrackPlayer, { Capability, useTrackPlayerEvents, Event, State } from 'react-native-track-player';
 import {
-  SafeAreaView
+  StatusBar,
+  View
 } from 'react-native';
 import { Provider } from 'react-redux';
 import store from './src/lib/store';
@@ -64,10 +65,11 @@ export default function App() {
   });
 
   return (
-    <SafeAreaView style={{ flex: 1}}>
+    <View style={{ flex: 1, backgroundColor: 'black' }}>
+      <StatusBar barStyle="dark-content" backgroundColor={'transparent'} translucent={true} />
       <Provider store={store}>
         <AppNavigator />
       </Provider>
-    </SafeAreaView>
+    </View>
   );
 };  
