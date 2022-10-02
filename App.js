@@ -49,8 +49,8 @@ export default function App() {
       // Icons for the notification on Android (if you don't like the default ones)
       playIcon: PlayButton,
       pauseIcon: PauseButton,
-      previousIcon: NextButton,
-      nextIcon: PreviousButton,
+      previousIcon: PreviousButton,
+      nextIcon: NextButton,
       icon: NotificationIcon,
     });
   }, [])
@@ -66,7 +66,7 @@ export default function App() {
 
   return (
     <View style={{ flex: 1, backgroundColor: 'black' }}>
-      <StatusBar barStyle="dark-content" backgroundColor={'transparent'} translucent={true} />
+      <StatusBar barStyle="light-content" backgroundColor={'transparent'} translucent={true} />
       <Provider store={store}>
         <AppNavigator />
       </Provider>
