@@ -17,6 +17,7 @@ import {
 } from './playerView.actionTypes';
 import db from '../../db';
 import { fetchFavorites } from '../LoadingView/loadingView.actions';
+import { events, logEvent } from '../../lib/log';
 
 export const fetchCurrentTrackURL = (track) => {
   return async (dispatch, getState) => {
@@ -96,6 +97,17 @@ export const fetchCurrentTrackURL = (track) => {
           track_url: base64.decode(d.data)
         }
       });
+
+      logEvent(events.SONG_PLAY, {
+        "track_title": track_title,
+        "track_id": track_id,
+        "album_id": album_id,
+        "type": "rtmp",
+        "isrc": "INUM72000090",
+        "delivery_type": "stream",
+        "quality": "high",
+        "hashcode": signature,
+      })
       
       await TrackPlayer.add([
         {
@@ -181,6 +193,10 @@ export const addToFavorite = (currentTrack, isFavorite) => {
       } else {
         updatedTracks = tracks.filter(track => getTrackId(track) !== getTrackId(currentTrack));
       }
+
+      logEvent(events.ADD_FAVORITE, {
+        "track_title": currentTrack?.track_title ?? currentTrack?.ti ?? getTrackId(currentTrack),
+      })
   
       db.action(async () => {
   

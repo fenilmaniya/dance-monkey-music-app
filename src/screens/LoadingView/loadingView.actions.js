@@ -34,7 +34,9 @@ export const fetchConstants = () => {
           type: SET_APP_SECRET,
           payload: {
             old_base_url: res[0].old_base,
-            api_secret: res[1].api_secret
+            search_url: res[0].search_url,
+            smart_feeds: res[0].smart_feeds,
+            api_secret: res[1].api_secret,
           }
         })
       })

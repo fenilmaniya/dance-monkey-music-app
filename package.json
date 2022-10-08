@@ -12,6 +12,7 @@
  "dependencies": {
   "@nozbe/watermelondb": "^0.20.0",
   "@nozbe/with-observables": "^1.0.8",
+  "@react-native-firebase/analytics": "^14.7.0",
   "@react-native-firebase/app": "^14.7.0",
   "@react-native-firebase/firestore": "^14.7.0",
   "@react-navigation/material-top-tabs": "^6.2.1",

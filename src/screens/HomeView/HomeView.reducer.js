@@ -15,7 +15,9 @@ const initialState = {
   dashboard: {
     loading: false,
     smart_feeds: [],
-  }
+    smartFeedPage: -1,
+  },
+
 }
 
 export default function loginReducer(state = initialState, action = {}) {
@@ -43,6 +45,7 @@ export default function loginReducer(state = initialState, action = {}) {
         dashboard: {
           ...state.dashboard,
           loading: true,
+          smartFeedPage: state.dashboard.smartFeedPage + 1,
         }
       }
     case FETCH_DASHBOARD_RESPONSE:

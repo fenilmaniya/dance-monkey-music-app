@@ -615,6 +615,9 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.68.0)
   - Firebase (8.15.0):
     - Firebase/Core (= 8.15.0)
+  - Firebase/AnalyticsWithoutAdIdSupport (8.15.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics/WithoutAdIdSupport (~> 8.15.0)
   - Firebase/Core (8.15.0):
     - Firebase/CoreOnly
     - FirebaseAnalytics (~> 8.15.0)
@@ -636,6 +639,15 @@ PODS:
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleAppMeasurement (= 8.15.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
+    - GoogleUtilities/MethodSwizzler (~> 7.7)
+    - GoogleUtilities/Network (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
+    - nanopb (~> 2.30908.0)
+  - FirebaseAnalytics/WithoutAdIdSupport (8.15.0):
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 8.15.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
@@ -1139,6 +1151,10 @@ PODS:
     - React-perflogger (= 0.68.0)
   - rn-fetch-blob (0.12.0):
     - React-Core
+  - RNFBAnalytics (14.7.0):
+    - Firebase/AnalyticsWithoutAdIdSupport (= 8.15.0)
+    - React-Core
+    - RNFBApp
   - RNFBApp (14.12.0):
     - Firebase/CoreOnly (= 8.15.0)
     - React-Core
@@ -1223,6 +1239,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
+  - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -1337,6 +1354,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
+  RNFBAnalytics:
+    :path: "../node_modules/@react-native-firebase/analytics"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBFirestore:
@@ -1415,6 +1434,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 9b1304f48e344c55bb3c36e13bf11461cb4da5d8
   ReactCommon: fab89a13b52f1ac42b59a0e4b4f76f21aea9eebe
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
+  RNFBAnalytics: 37c195a0401a7bf57ee938638973301a299c2b6c
   RNFBApp: e4439717c23252458da2b41b81b4b475c86f90c4
   RNFBFirestore: 24c46940b96579c50bd39a72566f6d48c6165f2f
   RNScreens: 0df01424e9e0ed7827200d6ed1087ddd06c493f9

@@ -31,7 +31,7 @@ export const searchWithQuery = (query) => {
     const app = state.app;
 
     await apiGet({
-      base: 'https://gsearch-prod-cloud.gaana.com/',
+      base: app.search_url,
       app,
       route: `${urls.auto_suggest}${query}`
     })
@@ -91,18 +91,27 @@ export const searchWithQuery = (query) => {
 }
 
 export const fetchDashboardData = () => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     dispatch({
       type: FETCH_DASHBOARD_REQUEST,
     });
 
     try {
+      const state = getState();
+      const app = state.app;
+      const { dashboard } = state.home;
       
       const promiseArray = [];
-      for (const smartFeedUrl of urls.smart_feeds) {
-
+      for (let i=(dashboard.smartFeedPage*4);i<((dashboard.smartFeedPage+1)*4);i++) {
+        const smartFeedUrl = app.smart_feeds[i];
+        if (!smartFeedUrl?.url) {
+          dispatch({
+            type: FETCH_DASHBOARD_ERROR,
+          });
+          return;
+        };
         const params = {
-          apiPath: smartFeedUrl.url,
+          apiPath: smartFeedUrl.url,  
           index: Math.floor(Math.random() * 10),
           type: 'homeSec'
         }
@@ -113,11 +122,12 @@ export const fetchDashboardData = () => {
             route: `apiv2?${encodeParamsForUrl(params)}`
           })
           .then(res => {
-            
+
             if (res && res?.entities && res?.entities.length > 0) {
               return {
                 ...res,
-                type: res?.entities[0].entity_type
+                type: res?.entities[0].entity_type,
+                title: res?.entityDescription ?? res?.entities[0]?.name ?? ''
               };
             }
 
@@ -130,7 +140,10 @@ export const fetchDashboardData = () => {
             dispatch({
               type: FETCH_DASHBOARD_RESPONSE,
               payload : {
-                smart_feeds: data,
+                smart_feeds: [
+                  ...dashboard.smart_feeds,
+                  ...data.filter(item => (item.entities ?? []).length>0)
+                ],
               }
             });
           });

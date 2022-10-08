@@ -19,12 +19,18 @@ export default function LoadingView() {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { dashboard } = getHome();
-  const { loading, smart_feeds } = dashboard;
+  const { loading, smart_feeds, smartFeedLoading, smartFeedPage } = dashboard;
 
   useEffect(() => {
 
     dispatch(fetchDashboardData());
   }, []);
+
+  const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+    const paddingToBottom = 20;
+    return layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,12 +61,22 @@ export default function LoadingView() {
         </TouchableOpacity> 
       </View>
 
-      { loading && <ActivityIndicator color={colors.white} size={22} /> }
-      <ScrollView>
+      { (loading && smartFeedPage<=0) && <ActivityIndicator color={colors.white} size={22} /> }
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        scrollEventThrottle={10}
+        bounces={false}
+        scrollEnabled={true}
+        onScroll={({nativeEvent}) => {
+          if (isCloseToBottom(nativeEvent) && !loading) {
+            dispatch(fetchDashboardData());
+          }
+        }}
+      >
         {
-          smart_feeds.map(smart_feed => (
-            <View>
-              <Text style={styles.smart_feed_title}>{smart_feed.entityDescription}</Text>
+          smart_feeds.map((smart_feed, index) => (
+            <View key={`smart-feed-item-${index}`}>
+              <Text style={styles.smart_feed_title}>{smart_feed.title}</Text>
               <TrackList 
                 tracks={smart_feed.entities}
                 horizontal={true}
@@ -69,6 +85,7 @@ export default function LoadingView() {
             </View>
           ))
         }
+        { (loading && smartFeedPage>1) && <ActivityIndicator color={colors.white} size={22} /> }
       </ScrollView>
 
       <MiniPlayer />
